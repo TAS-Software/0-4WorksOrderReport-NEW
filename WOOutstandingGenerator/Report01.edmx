@@ -1,0 +1,626 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="ConnectDbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="BOMShortageOwner">
+          <Key>
+            <PropertyRef Name="BOMShortageOwnerID" />
+          </Key>
+          <Property Name="BOMShortageOwnerID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="BOMShortagePGOwner">
+          <Key>
+            <PropertyRef Name="OwnerID" />
+            <PropertyRef Name="PgID" />
+          </Key>
+          <Property Name="OwnerID" Type="int" Nullable="false" />
+          <Property Name="PgID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="BOMShortageProductGroup">
+          <Key>
+            <PropertyRef Name="BOMShortageProductGroupID" />
+          </Key>
+          <Property Name="BOMShortageProductGroupID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="WODump">
+          <Key>
+            <PropertyRef Name="WODump_ID" />
+          </Key>
+          <Property Name="WODump_ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="WorksOrderNumber" Type="nvarchar" MaxLength="40" Nullable="false" />
+          <Property Name="Outstanding" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="PlannedIssueDate" Type="datetime" Nullable="false" />
+          <Property Name="ComponentPart" Type="nvarchar" MaxLength="40" Nullable="false" />
+        </EntityType>
+        <EntityType Name="WODumpTotals">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ComponentPart" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="PlannedIssueDate" Type="datetime" Nullable="false" />
+          <Property Name="TotalDateDemand" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+        </EntityType>
+        <EntityType Name="WOLineReport">
+          <Key>
+            <PropertyRef Name="WOLine_ID" />
+          </Key>
+          <Property Name="WOLine_ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="WorksOrderNumber" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="ParentStatusCode" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="ProductGroupCode" Type="nvarchar" MaxLength="30" />
+          <Property Name="ParentPartNumber" Type="nvarchar" MaxLength="100" />
+          <Property Name="ParentPartDescription" Type="nvarchar(max)" />
+          <Property Name="ParentMethod" Type="nvarchar(max)" />
+          <Property Name="OrderQuantity" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="WOOutstanding" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="ComponentPartNumber" Type="nvarchar" MaxLength="100" />
+          <Property Name="ComponentPartDescription" Type="nvarchar(max)" />
+          <Property Name="ComponentStatusCode" Type="nvarchar" MaxLength="30" />
+          <Property Name="CurrentComponentMethodType" Type="nvarchar" MaxLength="50" />
+          <Property Name="ComponentCurrentRev" Type="nvarchar" MaxLength="50" />
+          <Property Name="PlannedIssueQuantity" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="PlannedIssueDate" Type="datetime" />
+          <Property Name="CompletionDate" Type="datetime" />
+          <Property Name="ActualIssueQuantity" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="ActualIssueDate" Type="datetime" />
+          <Property Name="ReturnQuantity" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Outstanding" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="DemandUptoThisPlannedIssueDate" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="StockLeftAfterThisDate" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="GoodStock" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="BadStock" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="ComponentGroupCode" Type="nvarchar" MaxLength="50" />
+          <Property Name="WOCommercialNotes" Type="nvarchar(max)" />
+          <Property Name="WOProductionNotes" Type="nvarchar(max)" />
+          <Property Name="PurchaseOrderNumber" Type="nvarchar" MaxLength="50" />
+          <Property Name="QuantityPurchased" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="ReceiptDate" Type="datetime" />
+          <Property Name="SupplierName" Type="nvarchar(max)" />
+          <Property Name="POPartNotes" Type="nvarchar(max)" />
+          <Property Name="ComponentWorksOrder" Type="nvarchar" MaxLength="50" />
+          <Property Name="WODueDate" Type="datetime" />
+          <Property Name="Quantity" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="LastModifiedDate" Type="datetime" />
+          <Property Name="Issued" Type="bit" Nullable="false" />
+          <Property Name="PORaisedBy" Type="nvarchar(max)" />
+          <Property Name="WORaisedBy" Type="nvarchar(max)" />
+          <Property Name="WORespCode" Type="nvarchar(max)" />
+          <Property Name="UnitCost" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="POComments" Type="nvarchar(max)" />
+          <Property Name="CompRespCode" Type="nvarchar(max)" />
+          <Property Name="IsStoresRequest" Type="bit" />
+        </EntityType>
+        <EntityType Name="WOLineReport_PartsShortages">
+          <Key>
+            <PropertyRef Name="WOLine_ID" />
+          </Key>
+          <Property Name="WOLine_ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PartNumber" Type="nvarchar(max)" />
+          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="WONumber" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="WODueDate" Type="datetime" />
+          <Property Name="ProductGroup" Type="nvarchar(max)" />
+          <Property Name="PartMethod" Type="nvarchar(max)" />
+          <Property Name="Responsibility" Type="nvarchar(max)" />
+          <Property Name="CommercialNotes" Type="nvarchar(max)" />
+          <Property Name="BatchNotes" Type="nvarchar(max)" />
+          <Property Name="Demand" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="SODemand" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="DemandForThisDate" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="GoodStock" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="BadStock" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="NetShortage" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="StockAfterThisDate" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Supplier" Type="nvarchar(max)" />
+          <Property Name="PONumber" Type="nvarchar(max)" />
+          <Property Name="PODeliveryDate" Type="datetime" />
+          <Property Name="POQuantity" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="ParentAssembly" Type="nvarchar(max)" />
+          <Property Name="ParentAssemblyDescription" Type="nvarchar(max)" />
+          <Property Name="Issued" Type="bit" Nullable="false" />
+          <Property Name="POCoversDemand" Type="bit" />
+          <Property Name="Owner" Type="nvarchar(max)" />
+          <Property Name="UnitCost" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Store1" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Store2" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Store3" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="OtherGood" Type="nvarchar(max)" />
+          <Property Name="OtherBad" Type="nvarchar(max)" />
+          <Property Name="AllWOs" Type="nvarchar(max)" />
+          <Property Name="POComments" Type="nvarchar(max)" />
+          <Property Name="CompRespCode" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="WOLineReport_WOPartsLevel">
+          <Key>
+            <PropertyRef Name="WOLine_ID" />
+          </Key>
+          <Property Name="WOLine_ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PartNumber" Type="nvarchar(max)" />
+          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="WONumber" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="WODueDate" Type="datetime" />
+          <Property Name="ProductGroup" Type="nvarchar(max)" />
+          <Property Name="PartMethod" Type="nvarchar(max)" />
+          <Property Name="Responsibility" Type="nvarchar(max)" />
+          <Property Name="CommercialNotes" Type="nvarchar(max)" />
+          <Property Name="BatchNotes" Type="nvarchar(max)" />
+          <Property Name="Demand" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="DemandForThisDate" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="GoodStock" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="BadStock" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="NetShortage" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="StockAfterThisDate" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Supplier" Type="nvarchar(max)" />
+          <Property Name="PONumber" Type="nvarchar(max)" />
+          <Property Name="PODeliveryDate" Type="datetime" />
+          <Property Name="POQuantity" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="PORaisedBy" Type="nvarchar(max)" />
+          <Property Name="ComponentWO" Type="nvarchar(max)" />
+          <Property Name="ComponentWODueDate" Type="datetime" />
+          <Property Name="ComponentWOQuantity" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="WORaisedBy" Type="nvarchar(max)" />
+          <Property Name="ParentAssembly" Type="nvarchar(max)" />
+          <Property Name="ParentAssemblyDescription" Type="nvarchar(max)" />
+          <Property Name="Issued" Type="bit" Nullable="false" />
+          <Property Name="POCoversDemand" Type="bit" />
+          <Property Name="Owner" Type="nvarchar(max)" />
+          <Property Name="UnitCost" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Store1" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Store2" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Store3" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="OtherGood" Type="nvarchar(max)" />
+          <Property Name="OtherBad" Type="nvarchar(max)" />
+          <Property Name="AllWOs" Type="nvarchar(max)" />
+          <Property Name="POComments" Type="nvarchar(max)" />
+          <Property Name="CompRespCode" Type="nvarchar(max)" />
+        </EntityType>
+        <Association Name="FK_BOMShortagePGOwner_BOMShortageOwner">
+          <End Role="BOMShortageOwner" Type="Self.BOMShortageOwner" Multiplicity="1" />
+          <End Role="BOMShortagePGOwner" Type="Self.BOMShortagePGOwner" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BOMShortageOwner">
+              <PropertyRef Name="BOMShortageOwnerID" />
+            </Principal>
+            <Dependent Role="BOMShortagePGOwner">
+              <PropertyRef Name="OwnerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BOMShortagePGOwner_BOMShortageProductGroup">
+          <End Role="BOMShortageProductGroup" Type="Self.BOMShortageProductGroup" Multiplicity="1" />
+          <End Role="BOMShortagePGOwner" Type="Self.BOMShortagePGOwner" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BOMShortageProductGroup">
+              <PropertyRef Name="BOMShortageProductGroupID" />
+            </Principal>
+            <Dependent Role="BOMShortagePGOwner">
+              <PropertyRef Name="PgID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ConnectDbModelStoreContainer">
+          <EntitySet Name="BOMShortageOwner" EntityType="Self.BOMShortageOwner" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BOMShortagePGOwner" EntityType="Self.BOMShortagePGOwner" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BOMShortageProductGroup" EntityType="Self.BOMShortageProductGroup" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WODump" EntityType="Self.WODump" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WODumpTotals" EntityType="Self.WODumpTotals" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WOLineReport" EntityType="Self.WOLineReport" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WOLineReport_PartsShortages" EntityType="Self.WOLineReport_PartsShortages" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WOLineReport_WOPartsLevel" EntityType="Self.WOLineReport_WOPartsLevel" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_BOMShortagePGOwner_BOMShortageOwner" Association="Self.FK_BOMShortagePGOwner_BOMShortageOwner">
+            <End Role="BOMShortageOwner" EntitySet="BOMShortageOwner" />
+            <End Role="BOMShortagePGOwner" EntitySet="BOMShortagePGOwner" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BOMShortagePGOwner_BOMShortageProductGroup" Association="Self.FK_BOMShortagePGOwner_BOMShortageProductGroup">
+            <End Role="BOMShortageProductGroup" EntitySet="BOMShortageProductGroup" />
+            <End Role="BOMShortagePGOwner" EntitySet="BOMShortagePGOwner" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ConnectDbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="WODump">
+          <Key>
+            <PropertyRef Name="WODump_ID" />
+          </Key>
+          <Property Name="WODump_ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="WorksOrderNumber" Type="String" MaxLength="40" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Outstanding" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="PlannedIssueDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ComponentPart" Type="String" MaxLength="40" FixedLength="false" Unicode="true" Nullable="false" />
+        </EntityType>
+        <EntityType Name="WODumpTotal">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ComponentPart" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="PlannedIssueDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TotalDateDemand" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+        </EntityType>
+        <EntityType Name="WOLineReport">
+          <Key>
+            <PropertyRef Name="WOLine_ID" />
+          </Key>
+          <Property Name="WOLine_ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="WorksOrderNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ParentStatusCode" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ProductGroupCode" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="ParentPartNumber" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ParentPartDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ParentMethod" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="OrderQuantity" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="WOOutstanding" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="ComponentPartNumber" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ComponentPartDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ComponentStatusCode" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="CurrentComponentMethodType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ComponentCurrentRev" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PlannedIssueQuantity" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="PlannedIssueDate" Type="DateTime" Precision="3" />
+          <Property Name="CompletionDate" Type="DateTime" Precision="3" />
+          <Property Name="ActualIssueQuantity" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="ActualIssueDate" Type="DateTime" Precision="3" />
+          <Property Name="ReturnQuantity" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Outstanding" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="DemandUptoThisPlannedIssueDate" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="StockLeftAfterThisDate" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="GoodStock" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="BadStock" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="ComponentGroupCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="WOCommercialNotes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="WOProductionNotes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PurchaseOrderNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="QuantityPurchased" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="ReceiptDate" Type="DateTime" Precision="3" />
+          <Property Name="SupplierName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="POPartNotes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ComponentWorksOrder" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="WODueDate" Type="DateTime" Precision="3" />
+          <Property Name="Quantity" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="LastModifiedDate" Type="DateTime" Precision="3" />
+          <Property Name="Issued" Type="Boolean" Nullable="false" />
+          <Property Name="PORaisedBy" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="WORaisedBy" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="WORespCode" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="UnitCost" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="POComments" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CompRespCode" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IsStoresRequest" Type="Boolean" />
+        </EntityType>
+        <EntityContainer Name="ConnectReportDbEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="WODumps" EntityType="Self.WODump" />
+          <EntitySet Name="WODumpTotals" EntityType="Self.WODumpTotal" />
+          <EntitySet Name="WOLineReports" EntityType="Self.WOLineReport" />
+          <EntitySet Name="BOMShortageOwners" EntityType="ConnectDbModel.BOMShortageOwner" />
+          <EntitySet Name="BOMShortageProductGroups" EntityType="ConnectDbModel.BOMShortageProductGroup" />
+          <AssociationSet Name="BOMShortagePGOwner" Association="ConnectDbModel.BOMShortagePGOwner">
+            <End Role="BOMShortageOwner" EntitySet="BOMShortageOwners" />
+            <End Role="BOMShortageProductGroup" EntitySet="BOMShortageProductGroups" />
+          </AssociationSet>
+          <EntitySet Name="WOLineReport_PartsShortages" EntityType="ConnectDbModel.WOLineReport_PartsShortages" />
+          <EntitySet Name="WOLineReport_WOPartsLevel" EntityType="ConnectDbModel.WOLineReport_WOPartsLevel" />
+        </EntityContainer>
+        <EntityType Name="BOMShortageOwner">
+          <Key>
+            <PropertyRef Name="BOMShortageOwnerID" />
+          </Key>
+          <Property Name="BOMShortageOwnerID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="BOMShortageProductGroups" Relationship="ConnectDbModel.BOMShortagePGOwner" FromRole="BOMShortageOwner" ToRole="BOMShortageProductGroup" />
+        </EntityType>
+        <EntityType Name="BOMShortageProductGroup">
+          <Key>
+            <PropertyRef Name="BOMShortageProductGroupID" />
+          </Key>
+          <Property Name="BOMShortageProductGroupID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="BOMShortageOwners" Relationship="ConnectDbModel.BOMShortagePGOwner" FromRole="BOMShortageProductGroup" ToRole="BOMShortageOwner" />
+        </EntityType>
+        <Association Name="BOMShortagePGOwner">
+          <End Type="ConnectDbModel.BOMShortageOwner" Role="BOMShortageOwner" Multiplicity="*" />
+          <End Type="ConnectDbModel.BOMShortageProductGroup" Role="BOMShortageProductGroup" Multiplicity="*" />
+        </Association>
+        <EntityType Name="WOLineReport_PartsShortages">
+          <Key>
+            <PropertyRef Name="WOLine_ID" />
+          </Key>
+          <Property Name="WOLine_ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PartNumber" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="WONumber" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="WODueDate" Type="DateTime" Precision="3" />
+          <Property Name="ProductGroup" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PartMethod" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Responsibility" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CommercialNotes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="BatchNotes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Demand" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="SODemand" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="DemandForThisDate" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="GoodStock" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="BadStock" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="NetShortage" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="StockAfterThisDate" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Supplier" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PONumber" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PODeliveryDate" Type="DateTime" Precision="3" />
+          <Property Name="POQuantity" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="ParentAssembly" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ParentAssemblyDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Issued" Type="Boolean" Nullable="false" />
+          <Property Name="POCoversDemand" Type="Boolean" />
+          <Property Name="Owner" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="UnitCost" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Store1" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Store2" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Store3" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="OtherGood" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="OtherBad" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="AllWOs" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="POComments" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CompRespCode" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="WOLineReport_WOPartsLevel">
+          <Key>
+            <PropertyRef Name="WOLine_ID" />
+          </Key>
+          <Property Name="WOLine_ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PartNumber" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="WONumber" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="WODueDate" Type="DateTime" Precision="3" />
+          <Property Name="ProductGroup" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PartMethod" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Responsibility" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CommercialNotes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="BatchNotes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Demand" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="DemandForThisDate" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="GoodStock" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="BadStock" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="NetShortage" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="StockAfterThisDate" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Supplier" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PONumber" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PODeliveryDate" Type="DateTime" Precision="3" />
+          <Property Name="POQuantity" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="PORaisedBy" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ComponentWO" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ComponentWODueDate" Type="DateTime" Precision="3" />
+          <Property Name="ComponentWOQuantity" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="WORaisedBy" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ParentAssembly" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ParentAssemblyDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Issued" Type="Boolean" Nullable="false" />
+          <Property Name="POCoversDemand" Type="Boolean" />
+          <Property Name="Owner" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="UnitCost" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Store1" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Store2" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Store3" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="OtherGood" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="OtherBad" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="AllWOs" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="POComments" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CompRespCode" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ConnectDbModelStoreContainer" CdmEntityContainer="ConnectReportDbEntities">
+          <EntitySetMapping Name="WODumps">
+            <EntityTypeMapping TypeName="ConnectDbModel.WODump">
+              <MappingFragment StoreEntitySet="WODump">
+                <ScalarProperty Name="WODump_ID" ColumnName="WODump_ID" />
+                <ScalarProperty Name="WorksOrderNumber" ColumnName="WorksOrderNumber" />
+                <ScalarProperty Name="Outstanding" ColumnName="Outstanding" />
+                <ScalarProperty Name="PlannedIssueDate" ColumnName="PlannedIssueDate" />
+                <ScalarProperty Name="ComponentPart" ColumnName="ComponentPart" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WODumpTotals">
+            <EntityTypeMapping TypeName="ConnectDbModel.WODumpTotal">
+              <MappingFragment StoreEntitySet="WODumpTotals">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="ComponentPart" ColumnName="ComponentPart" />
+                <ScalarProperty Name="PlannedIssueDate" ColumnName="PlannedIssueDate" />
+                <ScalarProperty Name="TotalDateDemand" ColumnName="TotalDateDemand" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WOLineReports">
+            <EntityTypeMapping TypeName="ConnectDbModel.WOLineReport">
+              <MappingFragment StoreEntitySet="WOLineReport">
+                <ScalarProperty Name="IsStoresRequest" ColumnName="IsStoresRequest" />
+                <ScalarProperty Name="CompRespCode" ColumnName="CompRespCode" />
+                <ScalarProperty Name="POComments" ColumnName="POComments" />
+                <ScalarProperty Name="UnitCost" ColumnName="UnitCost" />
+                <ScalarProperty Name="WORespCode" ColumnName="WORespCode" />
+                <ScalarProperty Name="WORaisedBy" ColumnName="WORaisedBy" />
+                <ScalarProperty Name="PORaisedBy" ColumnName="PORaisedBy" />
+                <ScalarProperty Name="WOLine_ID" ColumnName="WOLine_ID" />
+                <ScalarProperty Name="WorksOrderNumber" ColumnName="WorksOrderNumber" />
+                <ScalarProperty Name="ParentStatusCode" ColumnName="ParentStatusCode" />
+                <ScalarProperty Name="ProductGroupCode" ColumnName="ProductGroupCode" />
+                <ScalarProperty Name="ParentPartNumber" ColumnName="ParentPartNumber" />
+                <ScalarProperty Name="ParentPartDescription" ColumnName="ParentPartDescription" />
+                <ScalarProperty Name="ParentMethod" ColumnName="ParentMethod" />
+                <ScalarProperty Name="OrderQuantity" ColumnName="OrderQuantity" />
+                <ScalarProperty Name="WOOutstanding" ColumnName="WOOutstanding" />
+                <ScalarProperty Name="ComponentPartNumber" ColumnName="ComponentPartNumber" />
+                <ScalarProperty Name="ComponentPartDescription" ColumnName="ComponentPartDescription" />
+                <ScalarProperty Name="ComponentStatusCode" ColumnName="ComponentStatusCode" />
+                <ScalarProperty Name="CurrentComponentMethodType" ColumnName="CurrentComponentMethodType" />
+                <ScalarProperty Name="ComponentCurrentRev" ColumnName="ComponentCurrentRev" />
+                <ScalarProperty Name="PlannedIssueQuantity" ColumnName="PlannedIssueQuantity" />
+                <ScalarProperty Name="PlannedIssueDate" ColumnName="PlannedIssueDate" />
+                <ScalarProperty Name="CompletionDate" ColumnName="CompletionDate" />
+                <ScalarProperty Name="ActualIssueQuantity" ColumnName="ActualIssueQuantity" />
+                <ScalarProperty Name="ActualIssueDate" ColumnName="ActualIssueDate" />
+                <ScalarProperty Name="ReturnQuantity" ColumnName="ReturnQuantity" />
+                <ScalarProperty Name="Outstanding" ColumnName="Outstanding" />
+                <ScalarProperty Name="DemandUptoThisPlannedIssueDate" ColumnName="DemandUptoThisPlannedIssueDate" />
+                <ScalarProperty Name="StockLeftAfterThisDate" ColumnName="StockLeftAfterThisDate" />
+                <ScalarProperty Name="GoodStock" ColumnName="GoodStock" />
+                <ScalarProperty Name="BadStock" ColumnName="BadStock" />
+                <ScalarProperty Name="ComponentGroupCode" ColumnName="ComponentGroupCode" />
+                <ScalarProperty Name="WOCommercialNotes" ColumnName="WOCommercialNotes" />
+                <ScalarProperty Name="WOProductionNotes" ColumnName="WOProductionNotes" />
+                <ScalarProperty Name="PurchaseOrderNumber" ColumnName="PurchaseOrderNumber" />
+                <ScalarProperty Name="QuantityPurchased" ColumnName="QuantityPurchased" />
+                <ScalarProperty Name="ReceiptDate" ColumnName="ReceiptDate" />
+                <ScalarProperty Name="SupplierName" ColumnName="SupplierName" />
+                <ScalarProperty Name="POPartNotes" ColumnName="POPartNotes" />
+                <ScalarProperty Name="ComponentWorksOrder" ColumnName="ComponentWorksOrder" />
+                <ScalarProperty Name="WODueDate" ColumnName="WODueDate" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="LastModifiedDate" ColumnName="LastModifiedDate" />
+                <ScalarProperty Name="Issued" ColumnName="Issued" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BOMShortageOwners">
+            <EntityTypeMapping TypeName="ConnectDbModel.BOMShortageOwner">
+              <MappingFragment StoreEntitySet="BOMShortageOwner">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="BOMShortageOwnerID" ColumnName="BOMShortageOwnerID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BOMShortageProductGroups">
+            <EntityTypeMapping TypeName="ConnectDbModel.BOMShortageProductGroup">
+              <MappingFragment StoreEntitySet="BOMShortageProductGroup">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="BOMShortageProductGroupID" ColumnName="BOMShortageProductGroupID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="BOMShortagePGOwner" TypeName="ConnectDbModel.BOMShortagePGOwner" StoreEntitySet="BOMShortagePGOwner">
+            <EndProperty Name="BOMShortageProductGroup">
+              <ScalarProperty Name="BOMShortageProductGroupID" ColumnName="PgID" />
+            </EndProperty>
+            <EndProperty Name="BOMShortageOwner">
+              <ScalarProperty Name="BOMShortageOwnerID" ColumnName="OwnerID" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <EntitySetMapping Name="WOLineReport_PartsShortages">
+            <EntityTypeMapping TypeName="ConnectDbModel.WOLineReport_PartsShortages">
+              <MappingFragment StoreEntitySet="WOLineReport_PartsShortages">
+                <ScalarProperty Name="CompRespCode" ColumnName="CompRespCode" />
+                <ScalarProperty Name="POComments" ColumnName="POComments" />
+                <ScalarProperty Name="AllWOs" ColumnName="AllWOs" />
+                <ScalarProperty Name="OtherBad" ColumnName="OtherBad" />
+                <ScalarProperty Name="OtherGood" ColumnName="OtherGood" />
+                <ScalarProperty Name="Store3" ColumnName="Store3" />
+                <ScalarProperty Name="Store2" ColumnName="Store2" />
+                <ScalarProperty Name="Store1" ColumnName="Store1" />
+                <ScalarProperty Name="UnitCost" ColumnName="UnitCost" />
+                <ScalarProperty Name="Owner" ColumnName="Owner" />
+                <ScalarProperty Name="POCoversDemand" ColumnName="POCoversDemand" />
+                <ScalarProperty Name="Issued" ColumnName="Issued" />
+                <ScalarProperty Name="ParentAssemblyDescription" ColumnName="ParentAssemblyDescription" />
+                <ScalarProperty Name="ParentAssembly" ColumnName="ParentAssembly" />
+                <ScalarProperty Name="POQuantity" ColumnName="POQuantity" />
+                <ScalarProperty Name="PODeliveryDate" ColumnName="PODeliveryDate" />
+                <ScalarProperty Name="PONumber" ColumnName="PONumber" />
+                <ScalarProperty Name="Supplier" ColumnName="Supplier" />
+                <ScalarProperty Name="StockAfterThisDate" ColumnName="StockAfterThisDate" />
+                <ScalarProperty Name="NetShortage" ColumnName="NetShortage" />
+                <ScalarProperty Name="BadStock" ColumnName="BadStock" />
+                <ScalarProperty Name="GoodStock" ColumnName="GoodStock" />
+                <ScalarProperty Name="DemandForThisDate" ColumnName="DemandForThisDate" />
+                <ScalarProperty Name="SODemand" ColumnName="SODemand" />
+                <ScalarProperty Name="Demand" ColumnName="Demand" />
+                <ScalarProperty Name="BatchNotes" ColumnName="BatchNotes" />
+                <ScalarProperty Name="CommercialNotes" ColumnName="CommercialNotes" />
+                <ScalarProperty Name="Responsibility" ColumnName="Responsibility" />
+                <ScalarProperty Name="PartMethod" ColumnName="PartMethod" />
+                <ScalarProperty Name="ProductGroup" ColumnName="ProductGroup" />
+                <ScalarProperty Name="WODueDate" ColumnName="WODueDate" />
+                <ScalarProperty Name="WONumber" ColumnName="WONumber" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="PartNumber" ColumnName="PartNumber" />
+                <ScalarProperty Name="WOLine_ID" ColumnName="WOLine_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WOLineReport_WOPartsLevel">
+            <EntityTypeMapping TypeName="ConnectDbModel.WOLineReport_WOPartsLevel">
+              <MappingFragment StoreEntitySet="WOLineReport_WOPartsLevel">
+                <ScalarProperty Name="CompRespCode" ColumnName="CompRespCode" />
+                <ScalarProperty Name="POComments" ColumnName="POComments" />
+                <ScalarProperty Name="AllWOs" ColumnName="AllWOs" />
+                <ScalarProperty Name="OtherBad" ColumnName="OtherBad" />
+                <ScalarProperty Name="OtherGood" ColumnName="OtherGood" />
+                <ScalarProperty Name="Store3" ColumnName="Store3" />
+                <ScalarProperty Name="Store2" ColumnName="Store2" />
+                <ScalarProperty Name="Store1" ColumnName="Store1" />
+                <ScalarProperty Name="UnitCost" ColumnName="UnitCost" />
+                <ScalarProperty Name="Owner" ColumnName="Owner" />
+                <ScalarProperty Name="POCoversDemand" ColumnName="POCoversDemand" />
+                <ScalarProperty Name="Issued" ColumnName="Issued" />
+                <ScalarProperty Name="ParentAssemblyDescription" ColumnName="ParentAssemblyDescription" />
+                <ScalarProperty Name="ParentAssembly" ColumnName="ParentAssembly" />
+                <ScalarProperty Name="WORaisedBy" ColumnName="WORaisedBy" />
+                <ScalarProperty Name="ComponentWOQuantity" ColumnName="ComponentWOQuantity" />
+                <ScalarProperty Name="ComponentWODueDate" ColumnName="ComponentWODueDate" />
+                <ScalarProperty Name="ComponentWO" ColumnName="ComponentWO" />
+                <ScalarProperty Name="PORaisedBy" ColumnName="PORaisedBy" />
+                <ScalarProperty Name="POQuantity" ColumnName="POQuantity" />
+                <ScalarProperty Name="PODeliveryDate" ColumnName="PODeliveryDate" />
+                <ScalarProperty Name="PONumber" ColumnName="PONumber" />
+                <ScalarProperty Name="Supplier" ColumnName="Supplier" />
+                <ScalarProperty Name="StockAfterThisDate" ColumnName="StockAfterThisDate" />
+                <ScalarProperty Name="NetShortage" ColumnName="NetShortage" />
+                <ScalarProperty Name="BadStock" ColumnName="BadStock" />
+                <ScalarProperty Name="GoodStock" ColumnName="GoodStock" />
+                <ScalarProperty Name="DemandForThisDate" ColumnName="DemandForThisDate" />
+                <ScalarProperty Name="Demand" ColumnName="Demand" />
+                <ScalarProperty Name="BatchNotes" ColumnName="BatchNotes" />
+                <ScalarProperty Name="CommercialNotes" ColumnName="CommercialNotes" />
+                <ScalarProperty Name="Responsibility" ColumnName="Responsibility" />
+                <ScalarProperty Name="PartMethod" ColumnName="PartMethod" />
+                <ScalarProperty Name="ProductGroup" ColumnName="ProductGroup" />
+                <ScalarProperty Name="WODueDate" ColumnName="WODueDate" />
+                <ScalarProperty Name="WONumber" ColumnName="WONumber" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="PartNumber" ColumnName="PartNumber" />
+                <ScalarProperty Name="WOLine_ID" ColumnName="WOLine_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

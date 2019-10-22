@@ -1,0 +1,24 @@
+﻿   
+   // These need to be added to the WOLineReport generated class.
+
+   public Nullable<decimal> SO_Demand { get; set; }
+   
+   public Nullable<decimal> DemandForThisDate { get; set; }
+   
+   public bool POCoversDemand { get; set; }
+
+   public string Owner { get; set; }
+
+      public decimal Store1 { get; set; }
+        public decimal Store2 { get; set; }
+        public decimal Store3 { get; set; }
+		public decimal Store4 { get; set; }
+		public decimal MoyFab { get; set; }
+		public decimal EagleOverseas { get; set; }
+        public string GoodLocations { get; set; }
+        public string BadLocations { get; set; }
+
+
+   // needs added to the StockLocationCount_Result
+
+         public bool isGood { get; set; }
