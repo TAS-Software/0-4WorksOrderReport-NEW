@@ -125,6 +125,7 @@ namespace WOOutstandingGenerator
                 Console.WriteLine("Sleeping For A Minute Here...");
                 System.Threading.Thread.Sleep(6000);
             }
+            Console.WriteLine("Server Open - Lets go!");
 
             thas01ReportEntities thas = new thas01ReportEntities();
             ConnectReportDbEntities connect = new ConnectReportDbEntities();
@@ -1011,7 +1012,7 @@ namespace WOOutstandingGenerator
 
         public static bool IsServerConnected()
         {
-            using (var l_oConnection = new SqlConnection(@"data source=THAS-REPORT01\THOMPSONSQL;initial catalog=ConnectDb;persist security info=True;user id=sa;password=ConnectUser;"))
+            using (var l_oConnection = new SqlConnection(@"data source=THAS-REPORT01\THOMPSONSQL;initial catalog=thas01;persist security info=True;Integrated Security=SSPI;"))
             {
                 try
                 {
