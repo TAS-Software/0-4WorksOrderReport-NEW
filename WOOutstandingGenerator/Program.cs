@@ -57,7 +57,7 @@ namespace WOOutstandingGenerator
                     else  // time to run baby!!!
                     {
                         var h = timeNow.Hours + 1;
-                        var newTime = new TimeSpan(h, 10, 00);
+                        var newTime = new TimeSpan(h, 15, 00);
                         var wait = (newTime - timeNow).Duration();
                         Console.WriteLine("The Wait Window is : " + wait.ToString());
                         Console.WriteLine("We will sleep for this time.");
