@@ -2,6 +2,7 @@
 using OfficeOpenXml.Style;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -22,6 +23,7 @@ namespace WOOutstandingGenerator
             TimeSpan _closeTime = new TimeSpan(23, 00, 00);
             Console.WriteLine("Do you want to run now first?");
             var answer = Console.ReadKey();
+            Console.WriteLine("");
 
             if (answer.KeyChar == 'y')
             {
@@ -118,6 +120,12 @@ namespace WOOutstandingGenerator
 
         private static void ProcessShortageReport()
         {
+            while (!IsServerConnected())
+            {
+                Console.WriteLine("Sleeping For A Minute Here...");
+                System.Threading.Thread.Sleep(6000);
+            }
+
             thas01ReportEntities thas = new thas01ReportEntities();
             ConnectReportDbEntities connect = new ConnectReportDbEntities();
             var owners = connect.BOMShortageProductGroups.Include("BOMShortageOwners").ToList();
@@ -125,8 +133,8 @@ namespace WOOutstandingGenerator
             List<ShortageLineGrouped> exports = new List<ShortageLineGrouped>();
             List<ShortageLine> exports2 = new List<ShortageLine>();
           
-            thas.Database.CommandTimeout = 180;
-            connect.Database.CommandTimeout = 180;
+            thas.Database.CommandTimeout = 12000;
+            connect.Database.CommandTimeout = 12000;
             string regexPattern = @"\{\*?\\[^{}]+}|[{}]|\\\n?[A-Za-z]+\n?(?:-?\d+)?[ ]?";
 
             FileInfo fileInfo;
@@ -145,7 +153,7 @@ namespace WOOutstandingGenerator
                     bool succeeded = false;
                     int failCount = 1;
                    
-                    while (!succeeded && failCount <= 10)
+                    while (!succeeded)
                     {
                         try
                         {
@@ -166,14 +174,14 @@ namespace WOOutstandingGenerator
                                 }
                                 catch (Exception ex)
                                 {
-                                    Console.WriteLine("OpenWO Failed. " + ex.Message);
+                                    Console.WriteLine("OpenWO Failed. " + ex.Message + ex.InnerException + ex.InnerException.Message);
                                     succeeded = false;
                                     failCount++;
                                 }
                             }
                             catch (Exception ex)
                             {
-                                Console.WriteLine("WODump Failed. " + ex.Message);
+                                Console.WriteLine("WODump Failed. " + ex.Message + ex.InnerException + ex.InnerException.Message);
                                 if (ex.InnerException != null)
                                 {
                                     Console.WriteLine("Inner Exception Details: " + ex.InnerException.Message);
@@ -196,7 +204,7 @@ namespace WOOutstandingGenerator
                         }
                         catch (Exception ex)
                         {
-                            Console.WriteLine("The Query Failed For The Following Reason: " + ex.Message + ". It Will Attempt To Run Again. Fail Count: " + failCount + ".");
+                            Console.WriteLine("The Query Failed For The Following Reason: " + ex.Message + ex.InnerException.Message + ". It Will Attempt To Run Again. Fail Count: " + failCount + ".");
                             failCount++;
                             succeeded = false;
                         }
@@ -999,6 +1007,25 @@ namespace WOOutstandingGenerator
                 }
             }
             return context;
+        }
+
+        public static bool IsServerConnected()
+        {
+            using (var l_oConnection = new SqlConnection(@"data source=THAS-REPORT01\THOMPSONSQL;initial catalog=ConnectDb;persist security info=True;user id=sa;password=ConnectUser;"))
+            {
+                try
+                {
+                    l_oConnection.Open();
+                    Console.WriteLine("DB Is Open");
+                    return true;
+
+                }
+                catch (SqlException)
+                {
+                    Console.WriteLine("DB Is Closed");
+                    return false;
+                }
+            }
         }
 
         //static void sendMail(string errorMessage)
