@@ -58,7 +58,17 @@ namespace WOOutstandingGenerator
                     }
                     else  // time to run baby!!!
                     {
-                        var h = timeNow.Hours + 1;
+                        var h = 0; 
+                        if (timeNow.Minutes <= 12)
+                        {
+                            h = timeNow.Hours;
+                            Console.WriteLine("Just In Time!");
+                        }
+                        else
+                        {
+                            h = timeNow.Hours + 1;
+                        }
+                       
                         var newTime = new TimeSpan(h, 15, 00);
                         var wait = (newTime - timeNow).Duration();
                         Console.WriteLine("The Wait Window is : " + wait.ToString());
@@ -103,8 +113,17 @@ namespace WOOutstandingGenerator
                     }
                     else  // time to run baby!!!
                     {
-                        var h = timeNow.Hours + 1;
-                        var newTime = new TimeSpan(h, 10, 00);
+                        var h = 0;
+                        if (timeNow.Minutes <= 12)
+                        {
+                            h = timeNow.Hours;
+                            Console.WriteLine("Just In Time!");
+                        }
+                        else
+                        {
+                            h = timeNow.Hours + 1;
+                        }
+                        var newTime = new TimeSpan(h, 15, 00);
                         var wait = (newTime - timeNow).Duration();
                         Console.WriteLine("The Wait Window is : " + wait.ToString());
                         Console.WriteLine("We will sleep for this time.");
@@ -123,7 +142,7 @@ namespace WOOutstandingGenerator
             while (!IsServerConnected())
             {
                 Console.WriteLine("Sleeping For A Minute Here...");
-                System.Threading.Thread.Sleep(6000);
+                System.Threading.Thread.Sleep(60000);
             }
             Console.WriteLine("Server Open - Lets go!");
 
@@ -220,22 +239,25 @@ namespace WOOutstandingGenerator
                     int ctr = 0;
                     Console.WriteLine("--- " + DateTime.Now + " There are a total of " + totalCount + " lines to process. ---");
 
-                    List<THAS_CONNECT_StockLocationCount_Result> cleaned = new List<THAS_CONNECT_StockLocationCount_Result>();                    
+                    List<THAS_CONNECT_StockLocationCount_Result> cleaned = new List<THAS_CONNECT_StockLocationCount_Result>();
+
+                    
 
                     foreach (WOLineReport woLine in resultSet)
                     {
+
                         Regex rgxProd = new Regex(regexPattern);
+                        Regex rgxComm = new Regex(regexPattern);
+                        Regex rgxPOComm = new Regex(regexPattern);
                         string productionReplace = "";
                         string ProductionNotes = woLine.WOProductionNotes != null ? woLine.WOProductionNotes : "";
                         woLine.WOProductionNotes = rgxProd.Replace(ProductionNotes, productionReplace);
 
-                        Regex rgxComm = new Regex(regexPattern);
                         string CommercialReplace = "";
                         string CommercialNotes = woLine.WOCommercialNotes != null ? woLine.WOCommercialNotes : "";
                         woLine.WOCommercialNotes = rgxComm.Replace(CommercialNotes, CommercialReplace);
                         woLine.WOCommercialNotes = woLine.WOCommercialNotes.TrimEnd(' ');
 
-                        Regex rgxPOComm = new Regex(regexPattern);
                         string POReplace = "";
                         string POComments = woLine.POComments != null ? woLine.POComments : "";
                         woLine.POComments = rgxPOComm.Replace(POComments, POReplace);
