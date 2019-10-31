@@ -13,6 +13,7 @@
         <AssociationConnector Association="ConnectDbModel.BOMShortagePGOwner" />
         <EntityTypeShape EntityType="ConnectDbModel.WOLineReport_PartsShortages" Width="1.5" PointX="3.375" PointY="6.75" />
         <EntityTypeShape EntityType="ConnectDbModel.WOLineReport_WOPartsLevel" Width="1.5" PointX="5.375" PointY="6.75" />
+        <EntityTypeShape EntityType="ConnectDbModel.InBuildStockDump" Width="1.5" PointX="5.375" PointY="0.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

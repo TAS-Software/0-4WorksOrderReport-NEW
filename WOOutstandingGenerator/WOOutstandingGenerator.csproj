@@ -28,7 +28,7 @@
     <MapFileExtensions>true</MapFileExtensions>
     <WebPage>publish.htm</WebPage>
     <AutorunEnabled>true</AutorunEnabled>
-    <ApplicationRevision>77</ApplicationRevision>
+    <ApplicationRevision>80</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -116,6 +116,9 @@
       <DependentUpon>Report01.tt</DependentUpon>
     </Compile>
     <Compile Include="BOMShortageProductGroup.cs">
+      <DependentUpon>Report01.tt</DependentUpon>
+    </Compile>
+    <Compile Include="InBuildStockDump.cs">
       <DependentUpon>Report01.tt</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />

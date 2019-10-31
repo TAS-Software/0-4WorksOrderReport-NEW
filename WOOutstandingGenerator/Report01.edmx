@@ -27,6 +27,17 @@
           <Property Name="BOMShortageProductGroupID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="varchar" MaxLength="100" Nullable="false" />
         </EntityType>
+        <EntityType Name="InBuildStockDump">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PartNumber" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="TotalOnHand" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="ExcludeMRP" Type="bit" Nullable="false" />
+          <Property Name="Quarantined" Type="bit" Nullable="false" />
+          <Property Name="Stock" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
         <EntityType Name="WODump">
           <Key>
             <PropertyRef Name="WODump_ID" />
@@ -135,6 +146,7 @@
           <Property Name="AllWOs" Type="nvarchar(max)" />
           <Property Name="POComments" Type="nvarchar(max)" />
           <Property Name="CompRespCode" Type="nvarchar(max)" />
+          <Property Name="StoresRequest" Type="bit" />
         </EntityType>
         <EntityType Name="WOLineReport_WOPartsLevel">
           <Key>
@@ -179,6 +191,7 @@
           <Property Name="AllWOs" Type="nvarchar(max)" />
           <Property Name="POComments" Type="nvarchar(max)" />
           <Property Name="CompRespCode" Type="nvarchar(max)" />
+          <Property Name="StoresRequest" Type="bit" />
         </EntityType>
         <Association Name="FK_BOMShortagePGOwner_BOMShortageOwner">
           <End Role="BOMShortageOwner" Type="Self.BOMShortageOwner" Multiplicity="1" />
@@ -208,6 +221,7 @@
           <EntitySet Name="BOMShortageOwner" EntityType="Self.BOMShortageOwner" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BOMShortagePGOwner" EntityType="Self.BOMShortagePGOwner" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BOMShortageProductGroup" EntityType="Self.BOMShortageProductGroup" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="InBuildStockDump" EntityType="Self.InBuildStockDump" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="WODump" EntityType="Self.WODump" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="WODumpTotals" EntityType="Self.WODumpTotals" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="WOLineReport" EntityType="Self.WOLineReport" Schema="dbo" store:Type="Tables" />
@@ -307,6 +321,7 @@
           </AssociationSet>
           <EntitySet Name="WOLineReport_PartsShortages" EntityType="ConnectDbModel.WOLineReport_PartsShortages" />
           <EntitySet Name="WOLineReport_WOPartsLevel" EntityType="ConnectDbModel.WOLineReport_WOPartsLevel" />
+          <EntitySet Name="InBuildStockDumps" EntityType="ConnectDbModel.InBuildStockDump" />
         </EntityContainer>
         <EntityType Name="BOMShortageOwner">
           <Key>
@@ -367,6 +382,7 @@
           <Property Name="AllWOs" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="POComments" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="CompRespCode" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="StoresRequest" Type="Boolean" />
         </EntityType>
         <EntityType Name="WOLineReport_WOPartsLevel">
           <Key>
@@ -411,6 +427,18 @@
           <Property Name="AllWOs" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="POComments" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="CompRespCode" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="StoresRequest" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="InBuildStockDump">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PartNumber" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TotalOnHand" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="ExcludeMRP" Type="Boolean" Nullable="false" />
+          <Property Name="Quarantined" Type="Boolean" Nullable="false" />
+          <Property Name="Stock" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -517,6 +545,7 @@
           <EntitySetMapping Name="WOLineReport_PartsShortages">
             <EntityTypeMapping TypeName="ConnectDbModel.WOLineReport_PartsShortages">
               <MappingFragment StoreEntitySet="WOLineReport_PartsShortages">
+                <ScalarProperty Name="StoresRequest" ColumnName="StoresRequest" />
                 <ScalarProperty Name="CompRespCode" ColumnName="CompRespCode" />
                 <ScalarProperty Name="POComments" ColumnName="POComments" />
                 <ScalarProperty Name="AllWOs" ColumnName="AllWOs" />
@@ -558,6 +587,7 @@
           <EntitySetMapping Name="WOLineReport_WOPartsLevel">
             <EntityTypeMapping TypeName="ConnectDbModel.WOLineReport_WOPartsLevel">
               <MappingFragment StoreEntitySet="WOLineReport_WOPartsLevel">
+                <ScalarProperty Name="StoresRequest" ColumnName="StoresRequest" />
                 <ScalarProperty Name="CompRespCode" ColumnName="CompRespCode" />
                 <ScalarProperty Name="POComments" ColumnName="POComments" />
                 <ScalarProperty Name="AllWOs" ColumnName="AllWOs" />
@@ -597,6 +627,18 @@
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="PartNumber" ColumnName="PartNumber" />
                 <ScalarProperty Name="WOLine_ID" ColumnName="WOLine_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="InBuildStockDumps">
+            <EntityTypeMapping TypeName="ConnectDbModel.InBuildStockDump">
+              <MappingFragment StoreEntitySet="InBuildStockDump">
+                <ScalarProperty Name="Stock" ColumnName="Stock" />
+                <ScalarProperty Name="Quarantined" ColumnName="Quarantined" />
+                <ScalarProperty Name="ExcludeMRP" ColumnName="ExcludeMRP" />
+                <ScalarProperty Name="TotalOnHand" ColumnName="TotalOnHand" />
+                <ScalarProperty Name="PartNumber" ColumnName="PartNumber" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

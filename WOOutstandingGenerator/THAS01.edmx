@@ -5,6 +5,7 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="thas01Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <Function Name="THAS_CONNECT_InBuildStockGenerator" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="THAS" />
         <Function Name="THAS_CONNECT_OPENWO_NEW_V2" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="THAS" />
         <Function Name="THAS_CONNECT_StockLocationCount" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="THAS" />
         <Function Name="WODumpProcedure" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="THAS" />
@@ -17,6 +18,7 @@
           <FunctionImport Name="THAS_CONNECT_OPENWO_NEW_V2" />
           <FunctionImport Name="WODumpProcedure" />
           <FunctionImport Name="THAS_CONNECT_StockLocationCount" ReturnType="Collection(thas01Model.THAS_CONNECT_StockLocationCount_Result)" />
+          <FunctionImport Name="THAS_CONNECT_InBuildStockGenerator" />
         </EntityContainer>
         <ComplexType Name="THAS_CONNECT_StockLocationCount_Result">
           <Property Type="String" Name="PartNumber" Nullable="true" MaxLength="25" />
@@ -44,6 +46,7 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="THAS_CONNECT_InBuildStockGenerator" FunctionName="thas01Model.Store.THAS_CONNECT_InBuildStockGenerator" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

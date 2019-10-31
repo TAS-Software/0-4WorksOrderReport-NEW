@@ -163,6 +163,7 @@ namespace WOOutstandingGenerator
             if (CreateDirectoryStructure(out fileInfo, theDate, theDateHours, @"InBuildShortagesReport_", "Shortage Reports", false)) //Shortage Reports
             {
                 var wolineTotals = connect.WODumpTotals.ToList();
+                //List<InBuildStockDump> stockCounts = new List<InBuildStockDump>();
                 List<THAS_CONNECT_StockLocationCount_Result> stockCounts = new List<THAS_CONNECT_StockLocationCount_Result>();
 
                 using (ExcelPackage excelPackage = new ExcelPackage(fileInfo))
@@ -177,18 +178,37 @@ namespace WOOutstandingGenerator
                     {
                         try
                         {
-                            connect.Database.ExecuteSqlCommand("truncate table WODump");
-                            connect.Database.ExecuteSqlCommand("truncate table WODumpTotals");
-                            connect.Database.ExecuteSqlCommand("truncate table WOLineReport");
+                            connect.Database.ExecuteSqlCommand("truncate table WODump"); 
+                            connect.Database.ExecuteSqlCommand("truncate table WODumpTotals"); 
+                            connect.Database.ExecuteSqlCommand("truncate table WOLineReport"); 
+                            //connect.Database.ExecuteSqlCommand("truncate table InBuildStockDump"); 
+
+                            using (var rptProd = new thas01ReportEntities())
+                            {
+                                try
+                                {
+                                    Console.WriteLine("Time Now Before Stock Location Query: " + DateTime.Now);
+                                    stockCounts = rptProd.THAS_CONNECT_StockLocationCount().ToList();
+                                    Console.WriteLine("Time Now After Stock Location Query: " + DateTime.Now);
+                                    //Console.WriteLine("Time Now Before New Stock Generator Query: " + DateTime.Now);
+                                    //rptProd.THAS_CONNECT_InBuildStockGenerator();
+                                    //var lol = connect.InBuildStockDumps.ToList();
+                                    //Console.WriteLine("Time Now After New Stock Generator Query: " + DateTime.Now);
+                                }
+                                catch (Exception)
+                                {
+                                    throw;
+                                }
+                            }
 
                             try
                             {
-                                thas.WODumpProcedure();
+                                thas.WODumpProcedure(); 
                                 Console.WriteLine("WODump Successful.");
 
                                 try
                                 {
-                                    thas.THAS_CONNECT_OPENWO_NEW_V2();
+                                    thas.THAS_CONNECT_OPENWO_NEW_V2(); 
                                     succeeded = true;
                                     Console.WriteLine("OpenWO Successful.");
                                 }
@@ -210,17 +230,7 @@ namespace WOOutstandingGenerator
                                 }
                             }
 
-                            using (var rptProd = new thas01ReportEntities())
-                            {
-                                try
-                                {
-                                    stockCounts = rptProd.THAS_CONNECT_StockLocationCount().ToList();
-                                }
-                                catch (Exception)
-                                {
-                                    throw;
-                                }
-                            }
+                            
                         }
                         catch (Exception ex)
                         {
@@ -229,9 +239,13 @@ namespace WOOutstandingGenerator
                             succeeded = false;
                         }
                     }
+                    Console.WriteLine("Time Now Before WOLineReport Table Retrieval Query: " + DateTime.Now);
                     resultSet = connect.WOLineReports.ToList();
+                    Console.WriteLine("Time Now After WOLineReport Table Retrieval Query: " + DateTime.Now);
                     var parts = resultSet.Select(x => x.ComponentPartNumber).Distinct().ToList();
+                    Console.WriteLine("Time Now After Parts Query: " + DateTime.Now);
                     stockCounts = stockCounts.Where(x => parts.Contains(x.PartNumber)).ToList();
+                    Console.WriteLine("Time Now After Stock Counts Query: " + DateTime.Now);
                     Console.WriteLine("The Query Was Successfully Retrieved, Please Wait For The File To Generate.");
                                                   
 
@@ -241,26 +255,20 @@ namespace WOOutstandingGenerator
 
                     List<THAS_CONNECT_StockLocationCount_Result> cleaned = new List<THAS_CONNECT_StockLocationCount_Result>();
 
-                    
+                    Regex rgxProd = new Regex(regexPattern);
+                    Regex rgxComm = new Regex(regexPattern);
+                    Regex rgxPOComm = new Regex(regexPattern);
 
-                    foreach (WOLineReport woLine in resultSet)
+                    foreach (WOLineReport woLine in resultSet.Take(10000))
                     {
-
-                        Regex rgxProd = new Regex(regexPattern);
-                        Regex rgxComm = new Regex(regexPattern);
-                        Regex rgxPOComm = new Regex(regexPattern);
-                        string productionReplace = "";
                         string ProductionNotes = woLine.WOProductionNotes != null ? woLine.WOProductionNotes : "";
-                        woLine.WOProductionNotes = rgxProd.Replace(ProductionNotes, productionReplace);
+                        woLine.WOProductionNotes = rgxProd.Replace(ProductionNotes, "").TrimEnd(' ');
 
-                        string CommercialReplace = "";
                         string CommercialNotes = woLine.WOCommercialNotes != null ? woLine.WOCommercialNotes : "";
-                        woLine.WOCommercialNotes = rgxComm.Replace(CommercialNotes, CommercialReplace);
-                        woLine.WOCommercialNotes = woLine.WOCommercialNotes.TrimEnd(' ');
-
-                        string POReplace = "";
+                        woLine.WOCommercialNotes = rgxComm.Replace(CommercialNotes, "").TrimEnd(' ');
+                        
                         string POComments = woLine.POComments != null ? woLine.POComments : "";
-                        woLine.POComments = rgxPOComm.Replace(POComments, POReplace);
+                        woLine.POComments = rgxPOComm.Replace(POComments, "");
 
                         woLine.ComponentGroupCode = !string.IsNullOrWhiteSpace(woLine.ComponentGroupCode) ? woLine.ComponentGroupCode : "-";
                         var own = owners.SingleOrDefault(x => x.Name.ToLower().Equals(woLine.ComponentGroupCode.ToLower()));
@@ -421,6 +429,7 @@ namespace WOOutstandingGenerator
                     exports = exports.OrderBy(pd => pd.PartNo).OrderBy(d => d.WODueDate).ToList();
 
                     var countz = 2;
+                    Console.WriteLine("Formatting now...");
                     foreach (var woLine in exports)
                     {
                         if ((woLine.GoodStock.Value - woLine.DemandForThisDate.Value) < new decimal(0.0))
@@ -546,7 +555,7 @@ namespace WOOutstandingGenerator
 
                         countz++;
                     }
-
+                    Console.WriteLine("Generating 1st Spreadsheet Tab Now...");
                     partsws.Cells["A1"].LoadFromCollection(exports, true, OfficeOpenXml.Table.TableStyles.Medium2);
                     int rowCount = partsws.Dimension.Rows;
                     partsws.Column(2).Width = 30;
@@ -625,6 +634,7 @@ namespace WOOutstandingGenerator
                     partsws.View.ZoomScale = 75;
                     partsws.DeleteColumn(12);
 
+                    Console.WriteLine("Generating 2nd Spreadsheet Tab Now...");
                     // Generate the WO-Parts-Level worksheet report.
                     var workSheet = excelPackage.Workbook.Worksheets.Add("Shorts-WO-Parts-Level");
 
@@ -777,12 +787,14 @@ namespace WOOutstandingGenerator
 
                     excelPackage.Save();
                 }
+                Console.WriteLine("Copying Over Generic Spreadsheet Now..." + DateTime.Now);
                 OverwriteGenericCopy(fileInfo.Name, theDate);
-
-                connect.Database.ExecuteSqlCommand("truncate table WOLineReport_WOPartsLevel");
-                connect.Database.ExecuteSqlCommand("truncate table WOLineReport_PartsShortages");
-                CopySecondSheetToDB(exports2);
-                CopyFirstSheetToDB(exports);
+                Console.WriteLine("Deleting From DB Tables Now..." + DateTime.Now);
+                connect.Database.ExecuteSqlCommand("truncate table WOLineReport_WOPartsLevel"); 
+                connect.Database.ExecuteSqlCommand("truncate table WOLineReport_PartsShortages"); 
+                Console.WriteLine("Copying Out Datasets To DB Now..." + DateTime.Now);
+                CopySecondSheetToDB(exports2); //COMMENTED FOR TESTING
+                CopyFirstSheetToDB(exports); //COMMENTED FOR TESTING
             }
         }
 
@@ -856,7 +868,7 @@ namespace WOOutstandingGenerator
                     gp.OtherBad = line.BadLocations;
                     gp.AllWOs = line.AllCallingWOs;
                     gp.CompRespCode = line.compResponsibility;
-                    gp.IsStoresRequest = line.IsStoresRequest;
+                    gp.StoresRequest = line.IsStoresRequest;
                     connect = AddToContextFirst(connect, gp, count, 500, true);
                 }
                 connect.SaveChanges();
@@ -918,7 +930,7 @@ namespace WOOutstandingGenerator
                     gp.OtherBad = line.BadLocations;
                     gp.AllWOs = string.Empty;
                     gp.CompRespCode = line.compResponsibility;
-                    gp.IsStoresRequest = line.IsStoresRequest;
+                    gp.StoresRequest = line.IsStoresRequest;
                     connect = AddToContextSecond(connect, gp, count, 500, true);
                 }
                 connect.SaveChanges();

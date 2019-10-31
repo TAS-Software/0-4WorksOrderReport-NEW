@@ -15,18 +15,20 @@ namespace WOOutstandingGenerator
 using System;
     using System.Collections.Generic;
     
-public partial class WODump
+public partial class InBuildStockDump
 {
 
-    public long WODump_ID { get; set; }
+    public long ID { get; set; }
 
-    public string WorksOrderNumber { get; set; }
+    public string PartNumber { get; set; }
 
-    public decimal Outstanding { get; set; }
+    public decimal TotalOnHand { get; set; }
 
-    public System.DateTime PlannedIssueDate { get; set; }
+    public bool ExcludeMRP { get; set; }
 
-    public string ComponentPart { get; set; }
+    public bool Quarantined { get; set; }
+
+    public string Stock { get; set; }
 
 }
 
