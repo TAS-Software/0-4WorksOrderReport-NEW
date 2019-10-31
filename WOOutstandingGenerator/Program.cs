@@ -262,10 +262,10 @@ namespace WOOutstandingGenerator
                     foreach (WOLineReport woLine in resultSet.Take(10000))
                     {
                         string ProductionNotes = woLine.WOProductionNotes != null ? woLine.WOProductionNotes : "";
-                        woLine.WOProductionNotes = rgxProd.Replace(ProductionNotes, "").TrimEnd(' ');
+                        woLine.WOProductionNotes = rgxProd.Replace(ProductionNotes, "").Replace("\r", "").Replace("\n", "").TrimEnd(' ');
 
                         string CommercialNotes = woLine.WOCommercialNotes != null ? woLine.WOCommercialNotes : "";
-                        woLine.WOCommercialNotes = rgxComm.Replace(CommercialNotes, "").TrimEnd(' ');
+                        woLine.WOCommercialNotes = rgxComm.Replace(CommercialNotes, "").Replace("\r", "").Replace("\n", "").TrimEnd(' ');
                         
                         string POComments = woLine.POComments != null ? woLine.POComments : "";
                         woLine.POComments = rgxPOComm.Replace(POComments, "");
