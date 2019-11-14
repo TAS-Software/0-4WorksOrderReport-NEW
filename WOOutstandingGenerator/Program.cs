@@ -59,7 +59,7 @@ namespace WOOutstandingGenerator
                     else  // time to run baby!!!
                     {
                         var h = 0; 
-                        if (timeNow.Minutes <= 12)
+                        if (timeNow.Minutes <= 14)
                         {
                             h = timeNow.Hours;
                             Console.WriteLine("Just In Time!");
@@ -114,7 +114,7 @@ namespace WOOutstandingGenerator
                     else  // time to run baby!!!
                     {
                         var h = 0;
-                        if (timeNow.Minutes <= 12)
+                        if (timeNow.Minutes <= 14)
                         {
                             h = timeNow.Hours;
                             Console.WriteLine("Just In Time!");
@@ -259,7 +259,18 @@ namespace WOOutstandingGenerator
                     Regex rgxComm = new Regex(regexPattern);
                     Regex rgxPOComm = new Regex(regexPattern);
 
-                    foreach (WOLineReport woLine in resultSet.Take(10000))
+                    decimal? demandUptoThisLine = new decimal(0.0);
+                    decimal? stockLeftAfterThisDemand = new decimal(0.0);
+                    decimal? so_demand = new decimal(0.0);
+
+                    StringBuilder glocationBuilder = new StringBuilder();
+                    StringBuilder blocationBuilder = new StringBuilder();
+                    string glocation = string.Empty;
+                    decimal gtotalQuantity = new decimal(0.0);
+                    string blocation = string.Empty;
+                    decimal btotalQuantity = new decimal(0.0);
+
+                    foreach (WOLineReport woLine in resultSet)
                     {
                         string ProductionNotes = woLine.WOProductionNotes != null ? woLine.WOProductionNotes : "";
                         woLine.WOProductionNotes = rgxProd.Replace(ProductionNotes, "").Replace("\r", "").Replace("\n", "").TrimEnd(' ');
@@ -275,13 +286,12 @@ namespace WOOutstandingGenerator
                         var ownz = own != null ? own.BOMShortageOwners.First().Name : woLine.ComponentGroupCode;
                         woLine.Owner = ownz;
 
-                        decimal? demandUptoThisLine = new decimal(0.0);
-                        decimal? stockLeftAfterThisDemand = new decimal(0.0);
-                        decimal? so_demand = new decimal(0.0);
+                        demandUptoThisLine = 0.0m;
+                        stockLeftAfterThisDemand = 0.0m;
+                        so_demand = 0.0m;
 
                         demandUptoThisLine = wolineTotals.Where(x => x.ComponentPart == woLine.ComponentPartNumber && x.PlannedIssueDate <= woLine.PlannedIssueDate).Sum(y => y.TotalDateDemand);
                         stockLeftAfterThisDemand = woLine.GoodStock - demandUptoThisLine;
-                        so_demand = 0;
 
                         bool doesPODueDateMeetPID;
                         if (stockLeftAfterThisDemand < 0) // stock minus?
@@ -307,12 +317,12 @@ namespace WOOutstandingGenerator
 
                         // Process Cleaned Stock Locations
 
-                        StringBuilder glocationBuilder = new StringBuilder();
-                        StringBuilder blocationBuilder = new StringBuilder();
-                        string glocation = string.Empty;
-                        decimal gtotalQuantity = new decimal(0.0);
-                        string blocation = string.Empty;
-                        decimal btotalQuantity = new decimal(0.0);
+                        glocationBuilder.Clear();
+                        blocationBuilder.Clear();
+                        glocation = string.Empty;
+                        gtotalQuantity = 0.0m;
+                        blocation = string.Empty;
+                        btotalQuantity = 0.0m;
                         //THAS_CONNECT_StockLocationCount_Result st1 = cleaned.SingleOrDefault(c => c.PartNumber.Equals(wo.ComponentPartNumber) && c.Location.Equals("STORE1"));
                         //THAS_CONNECT_StockLocationCount_Result st2 = cleaned.SingleOrDefault(c => c.PartNumber.Equals(wo.ComponentPartNumber) && c.Location.Equals("STORE2"));
                         //THAS_CONNECT_StockLocationCount_Result st3 = cleaned.SingleOrDefault(c => c.PartNumber.Equals(wo.ComponentPartNumber) && c.Location.Equals("STORE3"));
