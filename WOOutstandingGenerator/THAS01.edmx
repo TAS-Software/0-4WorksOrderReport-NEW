@@ -6,6 +6,7 @@
     <edmx:StorageModels>
     <Schema Namespace="thas01Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <Function Name="THAS_CONNECT_InBuildStockGenerator" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="THAS" />
+        <Function Name="THAS_CONNECT_OnlineShortage" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="THAS" />
         <Function Name="THAS_CONNECT_OPENWO_NEW_V2" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="THAS" />
         <Function Name="THAS_CONNECT_StockLocationCount" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="THAS" />
         <Function Name="WODumpProcedure" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="THAS" />
@@ -19,6 +20,7 @@
           <FunctionImport Name="WODumpProcedure" />
           <FunctionImport Name="THAS_CONNECT_StockLocationCount" ReturnType="Collection(thas01Model.THAS_CONNECT_StockLocationCount_Result)" />
           <FunctionImport Name="THAS_CONNECT_InBuildStockGenerator" />
+          <FunctionImport Name="THAS_CONNECT_OnlineShortage" ReturnType="Collection(thas01Model.THAS_CONNECT_OnlineShortage_Result)" />
         </EntityContainer>
         <ComplexType Name="THAS_CONNECT_StockLocationCount_Result">
           <Property Type="String" Name="PartNumber" Nullable="true" MaxLength="25" />
@@ -26,6 +28,22 @@
           <Property Type="String" Name="Location" Nullable="true" MaxLength="20" />
           <Property Type="Boolean" Name="Quarantined" Nullable="true" />
           <Property Type="Boolean" Name="ExcludeMRP" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="THAS_CONNECT_OnlineShortage_Result">
+          <Property Type="String" Name="ValueStreamName" Nullable="true" />
+          <Property Type="String" Name="Part_Number" Nullable="true" />
+          <Property Type="String" Name="Description" Nullable="true" />
+          <Property Type="String" Name="Product_Group" Nullable="true" />
+          <Property Type="String" Name="Part_Method" Nullable="true" />
+          <Property Type="String" Name="Comp_Responsibility" Nullable="true" />
+          <Property Type="String" Name="WO_Resp" Nullable="true" />
+          <Property Type="String" Name="Owner" Nullable="true" />
+          <Property Type="String" Name="Supplier" Nullable="true" />
+          <Property Type="String" Name="Commercial_Notes" Nullable="true" />
+          <Property Type="Decimal" Name="SO_Demand" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="Net_Shortage" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="DateTime" Name="PO_Acknowledge" Nullable="true" Precision="23" />
+          <Property Type="Boolean" Name="Stores_Request" Nullable="true" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -47,6 +65,26 @@
             </ResultMapping>
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="THAS_CONNECT_InBuildStockGenerator" FunctionName="thas01Model.Store.THAS_CONNECT_InBuildStockGenerator" />
+          <FunctionImportMapping FunctionImportName="THAS_CONNECT_OnlineShortage" FunctionName="thas01Model.Store.THAS_CONNECT_OnlineShortage">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="thas01Model.THAS_CONNECT_OnlineShortage_Result">
+                <ScalarProperty Name="ValueStreamName" ColumnName="ValueStreamName" />
+                <ScalarProperty Name="Part_Number" ColumnName="Part Number" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Product_Group" ColumnName="Product Group" />
+                <ScalarProperty Name="Part_Method" ColumnName="Part Method" />
+                <ScalarProperty Name="Comp_Responsibility" ColumnName="Comp Responsibility" />
+                <ScalarProperty Name="WO_Resp" ColumnName="WO Resp" />
+                <ScalarProperty Name="Owner" ColumnName="Owner" />
+                <ScalarProperty Name="Supplier" ColumnName="Supplier" />
+                <ScalarProperty Name="Commercial_Notes" ColumnName="Commercial Notes" />
+                <ScalarProperty Name="SO_Demand" ColumnName="SO Demand" />
+                <ScalarProperty Name="Net_Shortage" ColumnName="Net Shortage" />
+                <ScalarProperty Name="PO_Acknowledge" ColumnName="PO Acknowledge" />
+                <ScalarProperty Name="Stores_Request" ColumnName="Stores Request" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

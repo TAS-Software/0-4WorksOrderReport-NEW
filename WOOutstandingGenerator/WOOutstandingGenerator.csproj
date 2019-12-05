@@ -28,7 +28,7 @@
     <MapFileExtensions>true</MapFileExtensions>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>85</ApplicationRevision>
+    <ApplicationRevision>86</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -154,6 +154,9 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>THAS01.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="THAS_CONNECT_OnlineShortage_Result.cs">
+      <DependentUpon>THAS01.tt</DependentUpon>
     </Compile>
     <Compile Include="THAS_CONNECT_StockLocationCount_Result.cs">
       <DependentUpon>THAS01.tt</DependentUpon>

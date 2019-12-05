@@ -63,6 +63,13 @@ public partial class thas01ReportEntities : DbContext
         return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("THAS_CONNECT_InBuildStockGenerator");
     }
 
+
+    public virtual ObjectResult<THAS_CONNECT_OnlineShortage_Result> THAS_CONNECT_OnlineShortage()
+    {
+
+        return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<THAS_CONNECT_OnlineShortage_Result>("THAS_CONNECT_OnlineShortage");
+    }
+
 }
 
 }

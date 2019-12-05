@@ -805,6 +805,25 @@ namespace WOOutstandingGenerator
                 Console.WriteLine("Copying Out Datasets To DB Now..." + DateTime.Now);
                 CopySecondSheetToDB(exports2); //COMMENTED FOR TESTING
                 CopyFirstSheetToDB(exports); //COMMENTED FOR TESTING
+
+                theDate = DateTime.Now.ToString("yyyyMMdd");
+                theDateHours = DateTime.Now.ToString("yyyyMMdd HH.mm.ss");
+                if (CreateDirectoryStructure(out fileInfo, theDate, theDateHours, @"OnlineShortageReport", "Shortage Reports", false))
+                {
+                    var onlineShortageList = thas.THAS_CONNECT_OnlineShortage().ToList();
+                    using (ExcelPackage excelPackage = new ExcelPackage(fileInfo))
+                    {
+                        var workSheet = excelPackage.Workbook.Worksheets.Add("Online");
+
+                        workSheet.Cells["A1"].LoadFromCollection(onlineShortageList, true, OfficeOpenXml.Table.TableStyles.Medium2);
+                        int rowCount = workSheet.Dimension.Rows;
+                        workSheet.Cells["M2:M" + rowCount].Style.Numberformat.Format = "dd/MM/yyyy";
+                        workSheet.Cells[workSheet.Dimension.Address].AutoFitColumns();
+                        workSheet.View.ZoomScale = 75;
+                        excelPackage.Save();
+                        Console.WriteLine("Successfully Generated Online Shortage Report File Without Costings Excel File");
+                    }
+                }
             }
         }
 
