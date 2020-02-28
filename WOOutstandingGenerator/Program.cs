@@ -22,6 +22,7 @@ namespace WOOutstandingGenerator
             TimeSpan _timeToRun = new TimeSpan(05, 30, 00);
             TimeSpan _closeTime = new TimeSpan(23, 00, 00);
             Console.WriteLine("Do you want to run now first?");
+           
             var answer = Console.ReadKey();
             Console.WriteLine("");
 
@@ -195,9 +196,8 @@ namespace WOOutstandingGenerator
                                     //var lol = connect.InBuildStockDumps.ToList();
                                     //Console.WriteLine("Time Now After New Stock Generator Query: " + DateTime.Now);
                                 }
-                                catch (Exception)
+                                catch (Exception ex)
                                 {
-                                    throw;
                                 }
                             }
 
@@ -803,8 +803,8 @@ namespace WOOutstandingGenerator
                 connect.Database.ExecuteSqlCommand("truncate table WOLineReport_WOPartsLevel"); 
                 connect.Database.ExecuteSqlCommand("truncate table WOLineReport_PartsShortages"); 
                 Console.WriteLine("Copying Out Datasets To DB Now..." + DateTime.Now);
-                CopySecondSheetToDB(exports2); //COMMENTED FOR TESTING
-                CopyFirstSheetToDB(exports); //COMMENTED FOR TESTING
+                CopySecondSheetToDB(exports2); //COMMENT FOR TESTING
+                CopyFirstSheetToDB(exports); //COMMENT FOR TESTING
 
                 theDate = DateTime.Now.ToString("yyyyMMdd");
                 theDateHours = DateTime.Now.ToString("yyyyMMdd HH.mm.ss");
@@ -823,6 +823,7 @@ namespace WOOutstandingGenerator
                         excelPackage.Save();
                         Console.WriteLine("Successfully Generated Online Shortage Report File Without Costings Excel File");
                     }
+                    OverwriteGenericOnlineShortageCopy(fileInfo.Name, theDate);
                 }
                 theDate = DateTime.Now.ToString("yyyyMMdd");
                 theDateHours = DateTime.Now.ToString("yyyyMMdd HH.mm.ss");
@@ -841,6 +842,7 @@ namespace WOOutstandingGenerator
                         excelPackage.Save();
                         Console.WriteLine("Successfully Generated Online Availiblity Report File Without Costings Excel File");
                     }
+                    OverwriteGenericOnlineAvailabilityCopy(fileInfo.Name, theDate);
                 }
             }
         }
@@ -1022,7 +1024,72 @@ namespace WOOutstandingGenerator
                 return false;
             }
         }
+        private static bool OverwriteGenericOnlineShortageCopy(string newlyGeneratedFilename, string date)
+        {
+            try
+            {
 
+                var directory = @"\\tas\reports$\Shortage Reports\Without Costing Info\Generic\";
+                Directory.CreateDirectory(directory);
+                var filename = "OnlineShortageReport.xlsx";
+                FileInfo checkFile = new FileInfo(directory + filename);
+
+                if (checkFile.Exists)
+                {
+                    try
+                    {
+                        checkFile.IsReadOnly = false;
+                        File.Delete(directory + filename);
+                    }
+                    catch (Exception ex)
+                    {
+                        return false;
+                    }
+                }
+                var fileInfo = new FileInfo(string.Format(@"\\tas\reports$\Shortage Reports\Without Costing Info\{0}\{1}", date, newlyGeneratedFilename));
+                fileInfo.CopyTo(directory + filename);
+
+                return true;
+
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+        private static bool OverwriteGenericOnlineAvailabilityCopy(string newlyGeneratedFilename, string date)
+        {
+            try
+            {
+
+                var directory = @"\\tas\reports$\Shortage Reports\Without Costing Info\Generic\";
+                Directory.CreateDirectory(directory);
+                var filename = "OnlineAvailabilityReport.xlsx";
+                FileInfo checkFile = new FileInfo(directory + filename);
+
+                if (checkFile.Exists)
+                {
+                    try
+                    {
+                        checkFile.IsReadOnly = false;
+                        File.Delete(directory + filename);
+                    }
+                    catch (Exception ex)
+                    {
+                        return false;
+                    }
+                }
+                var fileInfo = new FileInfo(string.Format(@"\\tas\reports$\Shortage Reports\Without Costing Info\{0}\{1}", date, newlyGeneratedFilename));
+                fileInfo.CopyTo(directory + filename);
+
+                return true;
+
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
         private static bool CreateDirectoryStructure(out FileInfo fileInfo, string date, string dateHours, string filename, string folderPath, bool costed)
         {
             string path = @"\\tas\reports$\{0}\{1}\";

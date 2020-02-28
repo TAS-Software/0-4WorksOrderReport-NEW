@@ -5,7 +5,6 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="thas01Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <Function Name="THAS_CONNECT_InBuildStockGenerator" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="THAS" />
         <Function Name="THAS_CONNECT_OnlineAvailable" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="THAS" />
         <Function Name="THAS_CONNECT_OnlineShortage" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="THAS" />
         <Function Name="THAS_CONNECT_OPENWO_NEW_V2" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="THAS" />
@@ -17,12 +16,11 @@
     <edmx:ConceptualModels>
       <Schema Namespace="thas01Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="thas01ReportEntities" annotation:LazyLoadingEnabled="true" >
-          <FunctionImport Name="THAS_CONNECT_OPENWO_NEW_V2" />
-          <FunctionImport Name="WODumpProcedure" />
           <FunctionImport Name="THAS_CONNECT_StockLocationCount" ReturnType="Collection(thas01Model.THAS_CONNECT_StockLocationCount_Result)" />
-          <FunctionImport Name="THAS_CONNECT_InBuildStockGenerator" />
-          <FunctionImport Name="THAS_CONNECT_OnlineShortage" ReturnType="Collection(thas01Model.THAS_CONNECT_OnlineShortage_Result)" />
+          <FunctionImport Name="WODumpProcedure" />
+          <FunctionImport Name="THAS_CONNECT_OPENWO_NEW_V2" />
           <FunctionImport Name="THAS_CONNECT_OnlineAvailable" ReturnType="Collection(thas01Model.THAS_CONNECT_OnlineAvailable_Result)" />
+          <FunctionImport Name="THAS_CONNECT_OnlineShortage" ReturnType="Collection(thas01Model.THAS_CONNECT_OnlineShortage_Result)" />
         </EntityContainer>
         <ComplexType Name="THAS_CONNECT_StockLocationCount_Result">
           <Property Type="String" Name="PartNumber" Nullable="true" MaxLength="25" />
@@ -31,7 +29,7 @@
           <Property Type="Boolean" Name="Quarantined" Nullable="true" />
           <Property Type="Boolean" Name="ExcludeMRP" Nullable="true" />
         </ComplexType>
-        <ComplexType Name="THAS_CONNECT_OnlineShortage_Result">
+        <ComplexType Name="THAS_CONNECT_OnlineAvailable_Result">
           <Property Type="String" Name="ValueStreamName" Nullable="true" />
           <Property Type="String" Name="Part_Number" Nullable="true" />
           <Property Type="String" Name="Description" Nullable="true" />
@@ -47,7 +45,7 @@
           <Property Type="DateTime" Name="PO_Acknowledge" Nullable="true" Precision="23" />
           <Property Type="Boolean" Name="Stores_Request" Nullable="true" />
         </ComplexType>
-        <ComplexType Name="THAS_CONNECT_OnlineAvailable_Result">
+        <ComplexType Name="THAS_CONNECT_OnlineShortage_Result">
           <Property Type="String" Name="ValueStreamName" Nullable="true" />
           <Property Type="String" Name="Part_Number" Nullable="true" />
           <Property Type="String" Name="Description" Nullable="true" />
@@ -69,8 +67,6 @@
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="thas01ModelStoreContainer" CdmEntityContainer="thas01ReportEntities" >
-          <FunctionImportMapping FunctionImportName="THAS_CONNECT_OPENWO_NEW_V2" FunctionName="thas01Model.Store.THAS_CONNECT_OPENWO_NEW_V2" />
-          <FunctionImportMapping FunctionImportName="WODumpProcedure" FunctionName="thas01Model.Store.WODumpProcedure" />
           <FunctionImportMapping FunctionImportName="THAS_CONNECT_StockLocationCount" FunctionName="thas01Model.Store.THAS_CONNECT_StockLocationCount">
             <ResultMapping>
               <ComplexTypeMapping TypeName="thas01Model.THAS_CONNECT_StockLocationCount_Result">
@@ -82,10 +78,11 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="THAS_CONNECT_InBuildStockGenerator" FunctionName="thas01Model.Store.THAS_CONNECT_InBuildStockGenerator" />
-          <FunctionImportMapping FunctionImportName="THAS_CONNECT_OnlineShortage" FunctionName="thas01Model.Store.THAS_CONNECT_OnlineShortage">
+          <FunctionImportMapping FunctionImportName="WODumpProcedure" FunctionName="thas01Model.Store.WODumpProcedure" />
+          <FunctionImportMapping FunctionImportName="THAS_CONNECT_OPENWO_NEW_V2" FunctionName="thas01Model.Store.THAS_CONNECT_OPENWO_NEW_V2" />
+          <FunctionImportMapping FunctionImportName="THAS_CONNECT_OnlineAvailable" FunctionName="thas01Model.Store.THAS_CONNECT_OnlineAvailable">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="thas01Model.THAS_CONNECT_OnlineShortage_Result">
+              <ComplexTypeMapping TypeName="thas01Model.THAS_CONNECT_OnlineAvailable_Result">
                 <ScalarProperty Name="ValueStreamName" ColumnName="ValueStreamName" />
                 <ScalarProperty Name="Part_Number" ColumnName="Part Number" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
@@ -103,9 +100,9 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="THAS_CONNECT_OnlineAvailable" FunctionName="thas01Model.Store.THAS_CONNECT_OnlineAvailable">
+          <FunctionImportMapping FunctionImportName="THAS_CONNECT_OnlineShortage" FunctionName="thas01Model.Store.THAS_CONNECT_OnlineShortage">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="thas01Model.THAS_CONNECT_OnlineAvailable_Result">
+              <ComplexTypeMapping TypeName="thas01Model.THAS_CONNECT_OnlineShortage_Result">
                 <ScalarProperty Name="ValueStreamName" ColumnName="ValueStreamName" />
                 <ScalarProperty Name="Part_Number" ColumnName="Part Number" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
