@@ -401,8 +401,8 @@ namespace WOOutstandingGenerator
                             export.ProductGroupCode = wo.ComponentGroupCode;
                             export.PartMethod = wo.CurrentComponentMethodType;
                             export.Responsibility = wo.WORespCode;
-                            export.CommercialNotes = wo.WOCommercialNotes;
-                            export.BatchNotes = wo.WOProductionNotes;
+                            export.CommercialNotes = wo.WOCommercialNotes.Length > 31000 ? "" : wo.WOCommercialNotes;
+                            export.BatchNotes = wo.WOProductionNotes.Length > 31000 ? "" : wo.WOProductionNotes;
                             export.Demand = wo.Outstanding;
                             export.SO_Demand = curr_so_demand;
                             export.DemandForThisDate = wo.DemandForThisDate;
@@ -429,7 +429,7 @@ namespace WOOutstandingGenerator
                             export.EagleOverseas = wo.EagleOverseas;
                             export.GoodLocations = wo.GoodLocations; //= good != null ? good.Location : "";
                             export.BadLocations = wo.BadLocations; //bad != null ? bad.Location : "";
-                            export.POComments = wo.POComments;
+                            export.POComments = wo.POComments.Length > 31000 ? "" : wo.POComments;
                             export.compResponsibility = wo.CompRespCode;
                             export.IsStoresRequest = wo.IsStoresRequest.HasValue ? wo.IsStoresRequest.Value : false;
                             exports.Add(export);
@@ -658,8 +658,8 @@ namespace WOOutstandingGenerator
                         export.ProductGroupCode = wo.ComponentGroupCode;
                         export.PartMethod = wo.CurrentComponentMethodType;
                         export.Responsibility = wo.WORespCode;
-                        export.CommercialNotes = wo.WOCommercialNotes;
-                        export.BatchNotes = wo.WOProductionNotes;
+                        export.CommercialNotes = wo.WOCommercialNotes.Length > 31000 ? "" : wo.WOCommercialNotes;
+                        export.BatchNotes = wo.WOProductionNotes.Length > 31000 ? "" : wo.WOProductionNotes;
                         export.Demand = wo.Outstanding;
                         export.DemandForThisDate = wo.DemandForThisDate;
                         export.GoodStock = wo.GoodStock;
