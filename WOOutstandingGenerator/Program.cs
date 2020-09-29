@@ -337,7 +337,7 @@ namespace WOOutstandingGenerator
                                 {
                                     woLine.Store1 = grp.On_Hand_Batch_Qty.Value;
                                 }
-                                else if (grp.Location.Equals("STORE2"))
+                                else if (grp.Location.Equals("PLASTIC STORE F2"))
                                 {
                                     woLine.Store2 = grp.On_Hand_Batch_Qty.Value;
                                 }
@@ -595,7 +595,7 @@ namespace WOOutstandingGenerator
                     partsws.Cells["AB1"].Value = "PO Covers Demand?";
 
                     partsws.Cells["AC1"].Value = "Store 1";
-                    partsws.Cells["AD1"].Value = "Store 2";
+                    partsws.Cells["AD1"].Value = "Plastic Store F2";
                     partsws.Cells["AE1"].Value = "Store 3";
                     partsws.Cells["AF1"].Value = "Store 4";
                     partsws.Cells["AG1"].Value = "MoyFab";
@@ -754,7 +754,7 @@ namespace WOOutstandingGenerator
                     workSheet.Cells["AB1"].Value = "PO Covers Demand?";
                     workSheet.Cells["AC1"].Value = "Unit Cost";
                     workSheet.Cells["AD1"].Value = "Store 1";
-                    workSheet.Cells["AE1"].Value = "Store 2";
+                    workSheet.Cells["AE1"].Value = "Plastic Store F2";
                     workSheet.Cells["AF1"].Value = "Store 3";
                     workSheet.Cells["AG1"].Value = "Store 4";
                     workSheet.Cells["AH1"].Value = "MoyFab";
