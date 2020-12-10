@@ -179,9 +179,10 @@ namespace WOOutstandingGenerator
                     {
                         try
                         {
-                            connect.Database.ExecuteSqlCommand("truncate table WODump"); 
-                            connect.Database.ExecuteSqlCommand("truncate table WODumpTotals"); 
-                            connect.Database.ExecuteSqlCommand("truncate table WOLineReport"); 
+                            connect.Database.ExecuteSqlCommand("truncate table WODump"); //COMMENT FOR TESTING
+                            connect.Database.ExecuteSqlCommand("truncate table WODumpTotals"); //COMMENT FOR TESTING
+                            connect.Database.ExecuteSqlCommand("truncate table WOLineReport"); //COMMENT FOR TESTING
+
                             //connect.Database.ExecuteSqlCommand("truncate table InBuildStockDump"); 
 
                             using (var rptProd = new thas01ReportEntities())
@@ -397,6 +398,7 @@ namespace WOOutstandingGenerator
                             export.PartNo = wo.ComponentPartNumber;
                             export.Description = wo.ComponentPartDescription;
                             export.WorksOrderNumber = wo.WorksOrderNumber;
+                            export.WOProductGroupCode = wo.ProductGroupCode;
                             export.WODueDate = wo.CompletionDate;
                             export.ProductGroupCode = wo.ComponentGroupCode;
                             export.PartMethod = wo.CurrentComponentMethodType;
@@ -444,23 +446,23 @@ namespace WOOutstandingGenerator
                     {
                         if ((woLine.GoodStock.Value - woLine.DemandForThisDate.Value) < new decimal(0.0))
                         {
-                            partsws.Cells["R" + countz].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                            partsws.Cells["R" + countz].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.Red);
-                            partsws.Cells["R" + countz].Style.Font.Color.SetColor(System.Drawing.Color.White);
+                            partsws.Cells["S" + countz].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                            partsws.Cells["S" + countz].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.Red);
+                            partsws.Cells["S" + countz].Style.Font.Color.SetColor(System.Drawing.Color.White);
                         }
                         else
                         {
-                            partsws.Cells["R" + countz].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                            partsws.Cells["R" + countz].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.LightGreen);
-                            partsws.Cells["R" + countz].Style.Font.Color.SetColor(System.Drawing.Color.Black);
+                            partsws.Cells["S" + countz].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                            partsws.Cells["S" + countz].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.LightGreen);
+                            partsws.Cells["S" + countz].Style.Font.Color.SetColor(System.Drawing.Color.Black);
                         }
                         if (woLine.IsStoresRequest)
                         {
-                            partsws.Cells["AL" + countz].Value = "Yes";
+                            partsws.Cells["AM" + countz].Value = "Yes";
                         }
                         else
                         {
-                            partsws.Cells["AL" + countz].Value = "No";
+                            partsws.Cells["AM" + countz].Value = "No";
                         }
                         var realGoodStock = woLine.Store1 + woLine.Store2 + woLine.Store3 + woLine.Store4;
                         var offSiteStock = woLine.MoyFab + woLine.EagleOverseas;
@@ -484,81 +486,81 @@ namespace WOOutstandingGenerator
                             {
                                 if (doesMoyfabHaveStock)
                                 {
-                                    partsws.Cells["AG" + countz].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                                    partsws.Cells["AG" + countz].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.CornflowerBlue);
-                                    partsws.Cells["AG" + countz].Style.Font.Color.SetColor(System.Drawing.Color.Black);
-                                }
-                                if (doesEagleOverseasHaveStock)
-                                {
                                     partsws.Cells["AH" + countz].Style.Fill.PatternType = ExcelFillStyle.Solid;
                                     partsws.Cells["AH" + countz].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.CornflowerBlue);
                                     partsws.Cells["AH" + countz].Style.Font.Color.SetColor(System.Drawing.Color.Black);
                                 }
-                                if (doesOtherGoodLocHaveStock)
+                                if (doesEagleOverseasHaveStock)
                                 {
                                     partsws.Cells["AI" + countz].Style.Fill.PatternType = ExcelFillStyle.Solid;
                                     partsws.Cells["AI" + countz].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.CornflowerBlue);
                                     partsws.Cells["AI" + countz].Style.Font.Color.SetColor(System.Drawing.Color.Black);
+                                }
+                                if (doesOtherGoodLocHaveStock)
+                                {
+                                    partsws.Cells["AJ" + countz].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                                    partsws.Cells["AJ" + countz].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.CornflowerBlue);
+                                    partsws.Cells["AJ" + countz].Style.Font.Color.SetColor(System.Drawing.Color.Black);
                                 }
                             }
                             else if(isStorePlusOffsitePlusOtherGoodEnough)
                             {
                                 if (isStorePlusMoyfabEnough && doesMoyfabHaveStock)
                                 {
-                                    partsws.Cells["AG" + countz].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                                    partsws.Cells["AG" + countz].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.CornflowerBlue);
-                                    partsws.Cells["AG" + countz].Style.Font.Color.SetColor(System.Drawing.Color.Black);
+                                    partsws.Cells["AH" + countz].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                                    partsws.Cells["AH" + countz].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.CornflowerBlue);
+                                    partsws.Cells["AH" + countz].Style.Font.Color.SetColor(System.Drawing.Color.Black);
                                 }
                                 else if (isStorePlusOffsiteEnough && doesEagleOverseasHaveStock && doesMoyfabHaveStock)
                                 {
-                                    partsws.Cells["AG" + countz].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                                    partsws.Cells["AG" + countz].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.CornflowerBlue);
-                                    partsws.Cells["AG" + countz].Style.Font.Color.SetColor(System.Drawing.Color.Black);
                                     partsws.Cells["AH" + countz].Style.Fill.PatternType = ExcelFillStyle.Solid;
                                     partsws.Cells["AH" + countz].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.CornflowerBlue);
                                     partsws.Cells["AH" + countz].Style.Font.Color.SetColor(System.Drawing.Color.Black);
+                                    partsws.Cells["AI" + countz].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                                    partsws.Cells["AI" + countz].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.CornflowerBlue);
+                                    partsws.Cells["AI" + countz].Style.Font.Color.SetColor(System.Drawing.Color.Black);
                                 }
                                 else if (isStorePlusOffsiteEnough && doesEagleOverseasHaveStock)
                                 {
-                                    partsws.Cells["AH" + countz].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                                    partsws.Cells["AH" + countz].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.CornflowerBlue);
-                                    partsws.Cells["AH" + countz].Style.Font.Color.SetColor(System.Drawing.Color.Black);
+                                    partsws.Cells["AI" + countz].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                                    partsws.Cells["AI" + countz].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.CornflowerBlue);
+                                    partsws.Cells["AI" + countz].Style.Font.Color.SetColor(System.Drawing.Color.Black);
                                 }
                                 else if (doesMoyfabHaveStock && doesEagleOverseasHaveStock && doesOtherGoodLocHaveStock)
                                 {
-                                    partsws.Cells["AG" + countz].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                                    partsws.Cells["AG" + countz].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.CornflowerBlue);
-                                    partsws.Cells["AG" + countz].Style.Font.Color.SetColor(System.Drawing.Color.Black);
                                     partsws.Cells["AH" + countz].Style.Fill.PatternType = ExcelFillStyle.Solid;
                                     partsws.Cells["AH" + countz].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.CornflowerBlue);
                                     partsws.Cells["AH" + countz].Style.Font.Color.SetColor(System.Drawing.Color.Black);
                                     partsws.Cells["AI" + countz].Style.Fill.PatternType = ExcelFillStyle.Solid;
                                     partsws.Cells["AI" + countz].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.CornflowerBlue);
                                     partsws.Cells["AI" + countz].Style.Font.Color.SetColor(System.Drawing.Color.Black);
+                                    partsws.Cells["AJ" + countz].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                                    partsws.Cells["AJ" + countz].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.CornflowerBlue);
+                                    partsws.Cells["AJ" + countz].Style.Font.Color.SetColor(System.Drawing.Color.Black);
                                 }
                                 else if (doesMoyfabHaveStock && doesOtherGoodLocHaveStock)
                                 {
-                                    partsws.Cells["AG" + countz].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                                    partsws.Cells["AG" + countz].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.CornflowerBlue);
-                                    partsws.Cells["AG" + countz].Style.Font.Color.SetColor(System.Drawing.Color.Black);
-                                    partsws.Cells["AI" + countz].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                                    partsws.Cells["AI" + countz].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.CornflowerBlue);
-                                    partsws.Cells["AI" + countz].Style.Font.Color.SetColor(System.Drawing.Color.Black);
-                                }
-                                else if (doesEagleOverseasHaveStock && doesOtherGoodLocHaveStock)
-                                {
                                     partsws.Cells["AH" + countz].Style.Fill.PatternType = ExcelFillStyle.Solid;
                                     partsws.Cells["AH" + countz].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.CornflowerBlue);
                                     partsws.Cells["AH" + countz].Style.Font.Color.SetColor(System.Drawing.Color.Black);
-                                    partsws.Cells["AI" + countz].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                                    partsws.Cells["AI" + countz].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.CornflowerBlue);
-                                    partsws.Cells["AI" + countz].Style.Font.Color.SetColor(System.Drawing.Color.Black);
+                                    partsws.Cells["AJ" + countz].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                                    partsws.Cells["AJ" + countz].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.CornflowerBlue);
+                                    partsws.Cells["AJ" + countz].Style.Font.Color.SetColor(System.Drawing.Color.Black);
                                 }
-                                else if (doesOtherGoodLocHaveStock)
+                                else if (doesEagleOverseasHaveStock && doesOtherGoodLocHaveStock)
                                 {
                                     partsws.Cells["AI" + countz].Style.Fill.PatternType = ExcelFillStyle.Solid;
                                     partsws.Cells["AI" + countz].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.CornflowerBlue);
                                     partsws.Cells["AI" + countz].Style.Font.Color.SetColor(System.Drawing.Color.Black);
+                                    partsws.Cells["AJ" + countz].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                                    partsws.Cells["AJ" + countz].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.CornflowerBlue);
+                                    partsws.Cells["AJ" + countz].Style.Font.Color.SetColor(System.Drawing.Color.Black);
+                                }
+                                else if (doesOtherGoodLocHaveStock)
+                                {
+                                    partsws.Cells["AJ" + countz].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                                    partsws.Cells["AJ" + countz].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.CornflowerBlue);
+                                    partsws.Cells["AJ" + countz].Style.Font.Color.SetColor(System.Drawing.Color.Black);
                                 }
                             }
                         }
@@ -569,80 +571,85 @@ namespace WOOutstandingGenerator
                     partsws.Cells["A1"].LoadFromCollection(exports, true, OfficeOpenXml.Table.TableStyles.Medium2);
                     int rowCount = partsws.Dimension.Rows;
                     partsws.Column(2).Width = 30;
-                    partsws.Cells["D2:D" + rowCount].Style.Numberformat.Format = "dd-mm-yyyy";
-                    partsws.Cells["V2:V" + rowCount].Style.Numberformat.Format = "dd-mm-yyyy";
-                    partsws.Cells["A1:AL1"].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                    partsws.Cells["E2:E" + rowCount].Style.Numberformat.Format = "dd-mm-yyyy";
+                    partsws.Cells["W2:W" + rowCount].Style.Numberformat.Format = "dd-mm-yyyy";
+                    partsws.Cells["A1:AM1"].Style.Fill.PatternType = ExcelFillStyle.Solid;
                     partsws.Cells["A1"].Value = "Part Number";
+                    partsws.Cells["B1"].Value = "Description";
                     partsws.Cells["C1"].Value = "WO Number";
-                    partsws.Cells["D1"].Value = "WO Due Date";
-                    partsws.Cells["E1"].Value = "Product Group";
-                    partsws.Cells["F1"].Value = "Part Method";
-                    partsws.Cells["J1"].Value = "Commercial Notes";
-                    partsws.Cells["K1"].Value = "Batch Notes";
-                    partsws.Cells["O1"].Value = "Demand For This Date";
-                    partsws.Cells["P1"].Value = "Good Stock";
-                    partsws.Cells["Q1"].Value = "Bad Stock";
-                    partsws.Cells["R1"].Value = "Net Shortage";
-                    partsws.Cells["S1"].Value = "Stock After This Date";
-                    partsws.Cells["T1"].Value = "All Calling WOs";
-                    partsws.Cells["U1"].Value = "PO Number";
-                    partsws.Cells["V1"].Value = "PO Acknowledge Date";
-                    partsws.Cells["W1"].Value = "PO Quantity";
-                    partsws.Cells["X1"].Value = "PO Comments";
+                    partsws.Cells["D1"].Value = "WO Product Group";
+                    partsws.Cells["E1"].Value = "WO Due Date";
+                    partsws.Cells["F1"].Value = "Comp Product Group";
+                    partsws.Cells["G1"].Value = "Part Method";
+                    partsws.Cells["H1"].Value = "Responsibility";
+                    partsws.Cells["I1"].Value = "Owner";
+                    partsws.Cells["J1"].Value = "Supplier";
+                    partsws.Cells["K1"].Value = "Commercial Notes";
+                    partsws.Cells["L1"].Value = "Batch Notes";
+                    partsws.Cells["N1"].Value = "Demand";
+                    partsws.Cells["O1"].Value = "SO Demand";
+                    partsws.Cells["P1"].Value = "Demand For This Date";
+                    partsws.Cells["Q1"].Value = "Good Stock";
+                    partsws.Cells["R1"].Value = "Bad Stock";
+                    partsws.Cells["S1"].Value = "Net Shortage";
+                    partsws.Cells["T1"].Value = "Stock After This Date";
+                    partsws.Cells["U1"].Value = "All Calling WOs";
+                    partsws.Cells["V1"].Value = "PO Number";
+                    partsws.Cells["W1"].Value = "PO Acknowledge Date";
+                    partsws.Cells["X1"].Value = "PO Quantity";
+                    partsws.Cells["Y1"].Value = "PO Comments";
+                    partsws.Cells["Z1"].Value = "Parent Assembly";
+                    partsws.Cells["AA1"].Value = "Parent Assembly Description";
+                    partsws.Cells["AC1"].Value = "PO Covers Demand?";
+                    partsws.Cells["AD1"].Value = "Store 1";
+                    partsws.Cells["AE1"].Value = "Plastic Store F2";
+                    partsws.Cells["AF1"].Value = "Store 3";
+                    partsws.Cells["AG1"].Value = "Store 4";
+                    partsws.Cells["AH1"].Value = "MoyFab";
+                    partsws.Cells["AI1"].Value = "Eagle Overseas";
+                    partsws.Cells["AJ1"].Value = "Other Good Locations";
+                    partsws.Cells["AK1"].Value = "Bad Locations";
+                    partsws.Cells["AL1"].Value = "Comp Resp";
+                    partsws.Cells["AM1"].Value = "Stores Request?";
 
-                    partsws.Cells["Y1"].Value = "Parent Assembly";
-                    partsws.Cells["Z1"].Value = "Parent Assembly Description";
-                    partsws.Cells["AB1"].Value = "PO Covers Demand?";
+                    partsws.Cells["A1:AM1"].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.DodgerBlue);
+                    partsws.Cells["N1:P1"].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.Navy);
+                    partsws.Cells["Q1:R1"].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.DarkGreen);
+                    partsws.Cells["S1:S1"].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.DarkRed);
+                    partsws.Cells["AD:AK1"].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.DarkGreen);
 
-                    partsws.Cells["AC1"].Value = "Store 1";
-                    partsws.Cells["AD1"].Value = "Plastic Store F2";
-                    partsws.Cells["AE1"].Value = "Store 3";
-                    partsws.Cells["AF1"].Value = "Store 4";
-                    partsws.Cells["AG1"].Value = "MoyFab";
-                    partsws.Cells["AH1"].Value = "Eagle Overseas";
-                    partsws.Cells["AI1"].Value = "Other Good Locations";
-                    partsws.Cells["AJ1"].Value = "Bad Locations";
-                    partsws.Cells["AK1"].Value = "Comp Resp";
-                    partsws.Cells["AL1"].Value = "Stores Request?";
-
-                    partsws.Cells["A1:AL1"].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.DodgerBlue);
-                    partsws.Cells["M1:O1"].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.Navy);
-                    partsws.Cells["P1:Q1"].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.DarkGreen);
-                    partsws.Cells["R1:R1"].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.DarkRed);
-                    partsws.Cells["AC:AJ1"].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.DarkGreen);
-
-                    partsws.Cells["R2:R"+ rowCount].Style.Numberformat.Format = "0.00";
+                    partsws.Cells["S2:S"+ rowCount].Style.Numberformat.Format = "0.00";
 
                     //partsws.Cells[partsws.Dimension.Address].AutoFitColumns();
                     partsws.DefaultColWidth = 15.0;
                     partsws.Column(1).Width = 30.0;
                     partsws.Column(2).Width = 30.0;
-                    partsws.Column(3).Width = 15.0;
                     partsws.Column(4).Width = 15.0;
-                    partsws.Column(5).Width = 20.0;
+                    partsws.Column(5).Width = 15.0;
                     partsws.Column(6).Width = 20.0;
                     partsws.Column(7).Width = 20.0;
                     partsws.Column(8).Width = 20.0;
                     partsws.Column(9).Width = 20.0;
-                    partsws.Column(10).Width = 30.0;
+                    partsws.Column(10).Width = 20.0;
                     partsws.Column(11).Width = 30.0;
-                    partsws.Column(12).Width = 10.0;
-                    partsws.Column(13).Width = 15.0;
+                    partsws.Column(12).Width = 30.0;
+                    partsws.Column(13).Width = 10.0;
                     partsws.Column(14).Width = 15.0;
-                    partsws.Column(15).Width = 20.0;
-                    partsws.Column(16).Width = 12.5;
+                    partsws.Column(15).Width = 15.0;
+                    partsws.Column(16).Width = 20.0;
                     partsws.Column(17).Width = 12.5;
-                    partsws.Column(18).Width = 15.0;
-                    partsws.Column(20).Width = 30.0;
-                    partsws.Column(24).Width = 30.0;
+                    partsws.Column(18).Width = 12.5;
+                    partsws.Column(19).Width = 15.0;
+                    partsws.Column(21).Width = 30.0;
                     partsws.Column(25).Width = 30.0;
-                    partsws.Column(32).Width = 20.0;
+                    partsws.Column(26).Width = 30.0;
                     partsws.Column(33).Width = 20.0;
                     partsws.Column(34).Width = 20.0;
-                    partsws.Column(35).Width = 50.0;
+                    partsws.Column(35).Width = 20.0;
                     partsws.Column(36).Width = 50.0;
+                    partsws.Column(37).Width = 50.0;
                     partsws.View.ZoomScale = 75;
-                    partsws.DeleteColumn(12);
+                    partsws.DeleteColumn(13);
 
                     Console.WriteLine("Generating 2nd Spreadsheet Tab Now...");
                     // Generate the WO-Parts-Level worksheet report.
@@ -654,6 +661,7 @@ namespace WOOutstandingGenerator
                         export.PartNo = wo.ComponentPartNumber;
                         export.Description = wo.ComponentPartDescription;
                         export.WorksOrderNumber = wo.WorksOrderNumber;
+                        export.WOProductGroupCode = wo.ProductGroupCode;
                         export.WODueDate = wo.CompletionDate;
                         export.ProductGroupCode = wo.ComponentGroupCode;
                         export.PartMethod = wo.CurrentComponentMethodType;
@@ -700,59 +708,61 @@ namespace WOOutstandingGenerator
                     {
                         if (woLine.IsStoresRequest)
                         {
-                            workSheet.Cells["AL" + countz].Value = "Yes";
+                            workSheet.Cells["AM" + countz].Value = "Yes";
                         }
                         else
                         {
-                            workSheet.Cells["AL" + countz].Value = "No";
+                            workSheet.Cells["AM" + countz].Value = "No";
                         }
 
                         if ((woLine.GoodStock.Value - woLine.DemandForThisDate.Value) < new decimal(0.0))
                         {
-                            workSheet.Cells["P" + countz].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                            workSheet.Cells["P" + countz].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.Red);
-                            workSheet.Cells["P" + countz].Style.Font.Color.SetColor(System.Drawing.Color.White);
+                            workSheet.Cells["Q" + countz].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                            workSheet.Cells["Q" + countz].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.Red);
+                            workSheet.Cells["Q" + countz].Style.Font.Color.SetColor(System.Drawing.Color.White);
                         }
                         else
                         {
-                            workSheet.Cells["P" + countz].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                            workSheet.Cells["P" + countz].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.LightGreen);
-                            workSheet.Cells["P" + countz].Style.Font.Color.SetColor(System.Drawing.Color.Black);
+                            workSheet.Cells["Q" + countz].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                            workSheet.Cells["Q" + countz].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.LightGreen);
+                            workSheet.Cells["Q" + countz].Style.Font.Color.SetColor(System.Drawing.Color.Black);
                         }
                         countz++;
                     }
 
                     workSheet.Cells["A1"].LoadFromCollection(exports2, true, OfficeOpenXml.Table.TableStyles.Medium2);
                     rowCount = workSheet.Dimension.Rows;
-                    workSheet.Cells["D2:D" + rowCount].Style.Numberformat.Format = "dd-mm-yyyy";
-                    workSheet.Cells["S2:S" + rowCount].Style.Numberformat.Format = "dd-mm-yyyy";
-                    workSheet.Cells["W2:W" + rowCount].Style.Numberformat.Format = "dd-mm-yyyy";
-                    workSheet.Cells["A1:AM1"].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                    workSheet.Cells["E2:E" + rowCount].Style.Numberformat.Format = "dd-mm-yyyy";
+                    workSheet.Cells["T2:T" + rowCount].Style.Numberformat.Format = "dd-mm-yyyy";
+                    workSheet.Cells["X2:X" + rowCount].Style.Numberformat.Format = "dd-mm-yyyy";
+                    workSheet.Cells["A1:AN1"].Style.Fill.PatternType = ExcelFillStyle.Solid;
                     workSheet.Cells["A1"].Value = "Part Number";
                     workSheet.Cells["C1"].Value = "WO Number";
-                    workSheet.Cells["D1"].Value = "WO Due Date";
-                    workSheet.Cells["E1"].Value = "WO Raised By";
-                    workSheet.Cells["F1"].Value = "Product Group";
-                    workSheet.Cells["G1"].Value = "Part Method";
-                    workSheet.Cells["J1"].Value = "Commercial Notes";
-                    workSheet.Cells["K1"].Value = "Batch Notes";
-                    workSheet.Cells["I1"].Value = "Owner/Supplier";
-                    workSheet.Cells["M1"].Value = "Demand For This Date";
-                    workSheet.Cells["N1"].Value = "Good Stock";
-                    workSheet.Cells["O1"].Value = "Bad Stock";
-                    workSheet.Cells["P1"].Value = "Net Shortage";
-                    workSheet.Cells["Q1"].Value = "Stock After This Date";
-                    workSheet.Cells["R1"].Value = "PO Number";
-                    workSheet.Cells["S1"].Value = "PO Acknowledge Date";
-                    workSheet.Cells["T1"].Value = "PO Quantity";
-                    workSheet.Cells["U1"].Value = "PO Raised By";
-                    workSheet.Cells["V1"].Value = "Component WO";
-                    workSheet.Cells["W1"].Value = "Component WO Due Date";
-                    workSheet.Cells["X1"].Value = "Component WO Quantity";
-                    workSheet.Cells["Y1"].Value = "Parent Assembly";
-                    workSheet.Cells["Z1"].Value = "Parent Assembly Description";
-                    workSheet.Cells["AB1"].Value = "PO Covers Demand?";
-                    workSheet.Cells["AC1"].Value = "Unit Cost";
+                    workSheet.Cells["D1"].Value = "WO Product Group";
+                    workSheet.Cells["E1"].Value = "WO Due Date";
+                    workSheet.Cells["F1"].Value = "WO Raised By";
+                    workSheet.Cells["G1"].Value = "Comp Product Group";
+                    workSheet.Cells["H1"].Value = "Part Method";
+                    workSheet.Cells["I1"].Value = "Responsibility";
+                    workSheet.Cells["J1"].Value = "Owner/Supplier";
+                    workSheet.Cells["K1"].Value = "Commercial Notes";
+                    workSheet.Cells["L1"].Value = "Batch Notes";
+                    workSheet.Cells["M1"].Value = "Demand";
+                    workSheet.Cells["N1"].Value = "Demand For This Date";
+                    workSheet.Cells["O1"].Value = "Good Stock";
+                    workSheet.Cells["P1"].Value = "Bad Stock";
+                    workSheet.Cells["Q1"].Value = "Net Shortage";
+                    workSheet.Cells["R1"].Value = "Stock After This Date";
+                    workSheet.Cells["S1"].Value = "PO Number";
+                    workSheet.Cells["T1"].Value = "PO Acknowledge Date";
+                    workSheet.Cells["U1"].Value = "PO Quantity";
+                    workSheet.Cells["V1"].Value = "PO Raised By";
+                    workSheet.Cells["W1"].Value = "Component WO";
+                    workSheet.Cells["X1"].Value = "Component WO Due Date";
+                    workSheet.Cells["Y1"].Value = "Component WO Quantity";
+                    workSheet.Cells["Z1"].Value = "Parent Assembly";
+                    workSheet.Cells["AA1"].Value = "Parent Assembly Description";
+                    workSheet.Cells["AC1"].Value = "PO Covers Demand?";
                     workSheet.Cells["AD1"].Value = "Store 1";
                     workSheet.Cells["AE1"].Value = "Plastic Store F2";
                     workSheet.Cells["AF1"].Value = "Store 3";
@@ -764,22 +774,22 @@ namespace WOOutstandingGenerator
                     workSheet.Cells["AL1"].Value = "Comp Resp";
                     workSheet.Cells["AM1"].Value = "Stores Request?";
 
-                    workSheet.Cells["A1:AM1"].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.DodgerBlue);
-                    workSheet.Cells["L1:M1"].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.Navy);
-                    workSheet.Cells["N:O1"].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.DarkGreen);
-                    workSheet.Cells["P1:P1"].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.DarkRed);
-                    workSheet.Cells["R1:U1"].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.Goldenrod);
-                    workSheet.Cells["V1:X1"].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.DarkGoldenrod);
-                    workSheet.Cells["R1:X1"].Style.Font.Color.SetColor(System.Drawing.Color.Black);
+                    workSheet.Cells["A1:AN1"].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.DodgerBlue);
+                    workSheet.Cells["M1:N1"].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.Navy);
+                    workSheet.Cells["O1:P1"].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.DarkGreen);
+                    workSheet.Cells["Q1:Q1"].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.DarkRed);
+                    workSheet.Cells["S1:V1"].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.Goldenrod);
+                    workSheet.Cells["W1:Y1"].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.DarkGoldenrod);
+                    workSheet.Cells["S1:Y1"].Style.Font.Color.SetColor(System.Drawing.Color.Black);
 
                     workSheet.Cells[workSheet.Dimension.Address].AutoFitColumns();
                     workSheet.Column(1).Width = 25.0;
                     workSheet.Column(2).Width = 40.0;
-                    workSheet.Column(9).Width = 25.0;
-                    workSheet.Column(10).Width = 30.0;
+                    workSheet.Column(10).Width = 25.0;
                     workSheet.Column(11).Width = 30.0;
+                    workSheet.Column(12).Width = 30.0;
                     workSheet.View.ZoomScale = 75;
-                    workSheet.DeleteColumn(29);
+                    workSheet.DeleteColumn(30);
 
                     //var stockSheet = excelPackage.Workbook.Worksheets.Add("Parts-Stock-Locations");
                     //stockSheet.Cells["A1"].LoadFromCollection(cleaned, true, OfficeOpenXml.Table.TableStyles.Medium2);
@@ -798,10 +808,10 @@ namespace WOOutstandingGenerator
                     excelPackage.Save();
                 }
                 Console.WriteLine("Copying Over Generic Spreadsheet Now..." + DateTime.Now);
-                OverwriteGenericCopy(fileInfo.Name, theDate);
+                OverwriteGenericCopy(fileInfo.Name, theDate); //COMMENT FOR TESTING
                 Console.WriteLine("Deleting From DB Tables Now..." + DateTime.Now);
-                connect.Database.ExecuteSqlCommand("truncate table WOLineReport_WOPartsLevel"); 
-                connect.Database.ExecuteSqlCommand("truncate table WOLineReport_PartsShortages"); 
+                connect.Database.ExecuteSqlCommand("truncate table WOLineReport_WOPartsLevel");  //COMMENT FOR TESTING
+                connect.Database.ExecuteSqlCommand("truncate table WOLineReport_PartsShortages");  //COMMENT FOR TESTING
                 Console.WriteLine("Copying Out Datasets To DB Now..." + DateTime.Now);
                 CopySecondSheetToDB(exports2); //COMMENT FOR TESTING
                 CopyFirstSheetToDB(exports); //COMMENT FOR TESTING
@@ -996,7 +1006,7 @@ namespace WOOutstandingGenerator
             try
             {
 
-                var directory = @"\\tas\reports$\Shortage Reports\Without Costing Info\Generic\";
+                var directory = @"\\tas\reports$\Shortage Reports\Without Costing Info\Generic\"; //Shortage Reports
                 Directory.CreateDirectory(directory);
                 var filename = "InBuildShortageReport.xlsx";
                 FileInfo checkFile = new FileInfo(directory + filename);
@@ -1013,7 +1023,7 @@ namespace WOOutstandingGenerator
                         return false;
                     }
                 }
-                var fileInfo = new FileInfo(string.Format(@"\\tas\reports$\Shortage Reports\Without Costing Info\{0}\{1}", date, newlyGeneratedFilename));
+                var fileInfo = new FileInfo(string.Format(@"\\tas\reports$\Shortage Reports\Without Costing Info\{0}\{1}", date, newlyGeneratedFilename)); //Shortage Reports
                 fileInfo.CopyTo(directory + filename);
 
                 return true;
@@ -1029,7 +1039,7 @@ namespace WOOutstandingGenerator
             try
             {
 
-                var directory = @"\\tas\reports$\Shortage Reports\Without Costing Info\Generic\";
+                var directory = @"\\tas\reports$\Shortage Reports\Without Costing Info\Generic\"; //Shortage Reports
                 Directory.CreateDirectory(directory);
                 var filename = "OnlineShortageReport.xlsx";
                 FileInfo checkFile = new FileInfo(directory + filename);
@@ -1046,8 +1056,8 @@ namespace WOOutstandingGenerator
                         return false;
                     }
                 }
-                var fileInfo = new FileInfo(string.Format(@"\\tas\reports$\Shortage Reports\Without Costing Info\{0}\{1}", date, newlyGeneratedFilename));
-                fileInfo.CopyTo(directory + filename);
+                var fileInfo = new FileInfo(string.Format(@"\\tas\reports$\Shortage Reports\Without Costing Info\{0}\{1}", date, newlyGeneratedFilename)); //Shortage Reports
+                fileInfo.CopyTo(directory + filename); 
 
                 return true;
 
@@ -1062,7 +1072,7 @@ namespace WOOutstandingGenerator
             try
             {
 
-                var directory = @"\\tas\reports$\Shortage Reports\Without Costing Info\Generic\";
+                var directory = @"\\tas\reports$\Shortage Reports\Without Costing Info\Generic\"; //Shortage Reports
                 Directory.CreateDirectory(directory);
                 var filename = "OnlineAvailabilityReport.xlsx";
                 FileInfo checkFile = new FileInfo(directory + filename);
@@ -1079,7 +1089,7 @@ namespace WOOutstandingGenerator
                         return false;
                     }
                 }
-                var fileInfo = new FileInfo(string.Format(@"\\tas\reports$\Shortage Reports\Without Costing Info\{0}\{1}", date, newlyGeneratedFilename));
+                var fileInfo = new FileInfo(string.Format(@"\\tas\reports$\Shortage Reports\Without Costing Info\{0}\{1}", date, newlyGeneratedFilename)); //Shortage Reports
                 fileInfo.CopyTo(directory + filename);
 
                 return true;

@@ -11,6 +11,7 @@ namespace WOOutstandingGenerator
         public string PartNo { get; set; }
         public string Description { get; set; }
         public string WorksOrderNumber { get; set; }
+        public string WOProductGroupCode { get; set; }
         public Nullable<System.DateTime> WODueDate { get; set; }
         public string ProductGroupCode { get; set; }
         public string PartMethod { get; set; }
@@ -46,5 +47,7 @@ namespace WOOutstandingGenerator
         public string BadLocations { get; set; }
         public string compResponsibility { get; set; }
         public bool IsStoresRequest { get; set; }
+
+        
     }
 }
