@@ -14,6 +14,7 @@ namespace WOOutstandingGenerator
     public partial class THAS_CONNECT_OnlineShortage_Result
     {
         public string ValueStreamName { get; set; }
+        public string WO_Product_Group { get; set; }
         public string Part_Number { get; set; }
         public string Description { get; set; }
         public string Product_Group { get; set; }

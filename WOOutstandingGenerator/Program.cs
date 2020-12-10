@@ -827,7 +827,7 @@ namespace WOOutstandingGenerator
 
                         workSheet.Cells["A1"].LoadFromCollection(onlineShortageList, true, OfficeOpenXml.Table.TableStyles.Medium2);
                         int rowCount = workSheet.Dimension.Rows;
-                        workSheet.Cells["M2:M" + rowCount].Style.Numberformat.Format = "dd/MM/yyyy";
+                        workSheet.Cells["N2:N" + rowCount].Style.Numberformat.Format = "dd/MM/yyyy";
                         workSheet.Cells[workSheet.Dimension.Address].AutoFitColumns();
                         workSheet.View.ZoomScale = 75;
                         excelPackage.Save();
@@ -846,7 +846,7 @@ namespace WOOutstandingGenerator
 
                         workSheet.Cells["A1"].LoadFromCollection(onlineShortageList, true, OfficeOpenXml.Table.TableStyles.Medium2);
                         int rowCount = workSheet.Dimension.Rows;
-                        workSheet.Cells["M2:M" + rowCount].Style.Numberformat.Format = "dd/MM/yyyy";
+                        workSheet.Cells["N2:N" + rowCount].Style.Numberformat.Format = "dd/MM/yyyy";
                         workSheet.Cells[workSheet.Dimension.Address].AutoFitColumns();
                         workSheet.View.ZoomScale = 75;
                         excelPackage.Save();

@@ -31,9 +31,10 @@
         </ComplexType>
         <ComplexType Name="THAS_CONNECT_OnlineAvailable_Result">
           <Property Type="String" Name="ValueStreamName" Nullable="true" />
+          <Property Type="String" Name="WO_Product_Group" Nullable="true" MaxLength="10" />
           <Property Type="String" Name="Part_Number" Nullable="true" />
           <Property Type="String" Name="Description" Nullable="true" />
-          <Property Type="String" Name="Product_Group" Nullable="true" />
+          <Property Type="String" Name="Comp_Product_Group" Nullable="true" />
           <Property Type="String" Name="Part_Method" Nullable="true" />
           <Property Type="String" Name="Comp_Responsibility" Nullable="true" />
           <Property Type="String" Name="WO_Resp" Nullable="true" />
@@ -47,6 +48,7 @@
         </ComplexType>
         <ComplexType Name="THAS_CONNECT_OnlineShortage_Result">
           <Property Type="String" Name="ValueStreamName" Nullable="true" />
+          <Property Type="String" Name="WO_Product_Group" Nullable="true" MaxLength="10" />
           <Property Type="String" Name="Part_Number" Nullable="true" />
           <Property Type="String" Name="Description" Nullable="true" />
           <Property Type="String" Name="Product_Group" Nullable="true" />
@@ -84,9 +86,10 @@
             <ResultMapping>
               <ComplexTypeMapping TypeName="thas01Model.THAS_CONNECT_OnlineAvailable_Result">
                 <ScalarProperty Name="ValueStreamName" ColumnName="ValueStreamName" />
+                <ScalarProperty Name="WO_Product_Group" ColumnName="WO Product Group" />
                 <ScalarProperty Name="Part_Number" ColumnName="Part Number" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="Product_Group" ColumnName="Product Group" />
+                <ScalarProperty Name="Comp_Product_Group" ColumnName="Comp Product Group" />
                 <ScalarProperty Name="Part_Method" ColumnName="Part Method" />
                 <ScalarProperty Name="Comp_Responsibility" ColumnName="Comp Responsibility" />
                 <ScalarProperty Name="WO_Resp" ColumnName="WO Resp" />
@@ -104,6 +107,7 @@
             <ResultMapping>
               <ComplexTypeMapping TypeName="thas01Model.THAS_CONNECT_OnlineShortage_Result">
                 <ScalarProperty Name="ValueStreamName" ColumnName="ValueStreamName" />
+                <ScalarProperty Name="WO_Product_Group" ColumnName="WO Product Group" />
                 <ScalarProperty Name="Part_Number" ColumnName="Part Number" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="Product_Group" ColumnName="Product Group" />
