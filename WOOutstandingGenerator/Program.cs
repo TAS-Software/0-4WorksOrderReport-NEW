@@ -145,7 +145,10 @@ namespace WOOutstandingGenerator
                 Console.WriteLine("Sleeping For A Minute Here...");
                 System.Threading.Thread.Sleep(60000);
             }
+
+
             Console.WriteLine("Server Open - Lets go!");
+
 
             thas01ReportEntities thas = new thas01ReportEntities();
             ConnectReportDbEntities connect = new ConnectReportDbEntities();
@@ -818,7 +821,7 @@ namespace WOOutstandingGenerator
 
                 theDate = DateTime.Now.ToString("yyyyMMdd");
                 theDateHours = DateTime.Now.ToString("yyyyMMdd HH.mm.ss");
-                if (CreateDirectoryStructure(out fileInfo, theDate, theDateHours, @"OnlineShortageReport", "Shortage Reports", false))
+                if (CreateDirectoryStructure(out fileInfo, theDate, theDateHours, @"OnlineShortageReport", "Shortage Reports", false)) //Change Back
                 {
                     var onlineShortageList = thas.THAS_CONNECT_OnlineShortage().ToList();
                     using (ExcelPackage excelPackage = new ExcelPackage(fileInfo))
@@ -837,7 +840,7 @@ namespace WOOutstandingGenerator
                 }
                 theDate = DateTime.Now.ToString("yyyyMMdd");
                 theDateHours = DateTime.Now.ToString("yyyyMMdd HH.mm.ss");
-                if (CreateDirectoryStructure(out fileInfo, theDate, theDateHours, @"OnlineAvailabilityReport", "Shortage Reports", false))
+                if (CreateDirectoryStructure(out fileInfo, theDate, theDateHours, @"OnlineAvailabilityReport", "Shortage Reports", false)) //Change Back
                 {
                     var onlineShortageList = thas.THAS_CONNECT_OnlineAvailable().ToList();
                     using (ExcelPackage excelPackage = new ExcelPackage(fileInfo))
@@ -1006,7 +1009,7 @@ namespace WOOutstandingGenerator
             try
             {
 
-                var directory = @"\\tas\reports$\Shortage Reports\Without Costing Info\Generic\"; //Shortage Reports
+                var directory = @"\\tas\reports$\Shortage Reports\Without Costing Info\Generic\"; //Shortage Reports //Change Back
                 Directory.CreateDirectory(directory);
                 var filename = "InBuildShortageReport.xlsx";
                 FileInfo checkFile = new FileInfo(directory + filename);
@@ -1023,7 +1026,7 @@ namespace WOOutstandingGenerator
                         return false;
                     }
                 }
-                var fileInfo = new FileInfo(string.Format(@"\\tas\reports$\Shortage Reports\Without Costing Info\{0}\{1}", date, newlyGeneratedFilename)); //Shortage Reports
+                var fileInfo = new FileInfo(string.Format(@"\\tas\reports$\Shortage Reports\Without Costing Info\{0}\{1}", date, newlyGeneratedFilename)); //Shortage Reports //Change Back
                 fileInfo.CopyTo(directory + filename);
 
                 return true;
@@ -1039,7 +1042,7 @@ namespace WOOutstandingGenerator
             try
             {
 
-                var directory = @"\\tas\reports$\Shortage Reports\Without Costing Info\Generic\"; //Shortage Reports
+                var directory = @"\\tas\reports$\Shortage Reports\Without Costing Info\Generic\"; //Shortage Reports //Change Back
                 Directory.CreateDirectory(directory);
                 var filename = "OnlineShortageReport.xlsx";
                 FileInfo checkFile = new FileInfo(directory + filename);
@@ -1056,7 +1059,7 @@ namespace WOOutstandingGenerator
                         return false;
                     }
                 }
-                var fileInfo = new FileInfo(string.Format(@"\\tas\reports$\Shortage Reports\Without Costing Info\{0}\{1}", date, newlyGeneratedFilename)); //Shortage Reports
+                var fileInfo = new FileInfo(string.Format(@"\\tas\reports$\Shortage Reports\Without Costing Info\{0}\{1}", date, newlyGeneratedFilename)); //Shortage Reports //Change Back
                 fileInfo.CopyTo(directory + filename); 
 
                 return true;
@@ -1072,7 +1075,7 @@ namespace WOOutstandingGenerator
             try
             {
 
-                var directory = @"\\tas\reports$\Shortage Reports\Without Costing Info\Generic\"; //Shortage Reports
+                var directory = @"\\tas\reports$\Shortage Reports\Without Costing Info\Generic\"; //Shortage Reports //Change Back
                 Directory.CreateDirectory(directory);
                 var filename = "OnlineAvailabilityReport.xlsx";
                 FileInfo checkFile = new FileInfo(directory + filename);
@@ -1089,7 +1092,7 @@ namespace WOOutstandingGenerator
                         return false;
                     }
                 }
-                var fileInfo = new FileInfo(string.Format(@"\\tas\reports$\Shortage Reports\Without Costing Info\{0}\{1}", date, newlyGeneratedFilename)); //Shortage Reports
+                var fileInfo = new FileInfo(string.Format(@"\\tas\reports$\Shortage Reports\Without Costing Info\{0}\{1}", date, newlyGeneratedFilename)); //Shortage Reports //Change Back
                 fileInfo.CopyTo(directory + filename);
 
                 return true;
